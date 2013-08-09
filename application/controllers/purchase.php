@@ -176,9 +176,16 @@ class Purchase extends CI_Controller {
 
 
 			$product_ids = $this->input->post('product_id');
-			$delete_ids  = $this->input->post('delete_id');
+			//$delete_ids  = $this->input->post('delete_id');
 			$new_product_ids = $this->input->post('new_product_id');
-
+			if($this->input->post('delete_id'))
+			{
+				$delete_ids  = $this->input->post('delete_id');	
+			}
+			else
+			{
+				$delete_ids = array();
+			}
 			if($product_ids != null) {
 				$barcodes = $this->input->post('barcode');
 				$mrps 	  = $this->input->post('mrp');
