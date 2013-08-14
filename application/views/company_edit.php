@@ -1,6 +1,4 @@
-<div class="row-fluid">
-  <div class="span10">
-  
+
 <?php
 echo start_widget('Company Information', anchor('Company', '<span class="icon"><i class="icon-list"></i></span>'), 'nopadding');
 echo form_open($this->uri->uri_string(), 'class="form-horizontal"');

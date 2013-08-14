@@ -4,30 +4,21 @@
         window.location = $(this).data('href');
         return false;
     });
-});
+	});
 </script>
-
-
-<div class="row-fluid">
-	<div class="span10">
-	
-	<fieldset>		
+<fieldset>		
 	<table class="table table-striped ">
 		<thead>
 			<tr>
-
 				<?php 
-				foreach ($list['heading'] as $value) {
-					echo "<th>".$value."<th>";
-				}
+					foreach ($list['heading'] as $value) {
+						echo "<th>".$value."<th>";
+					}
 				?>
 			</tr>
 		</thead>
 		<tbody>
-				<?php
-
-				//$this->firephp->info($rows);exit;
-
+			<?php
 				foreach ($rows as $value) {
 					echo "<tr>";
 					foreach($fields as $col){
@@ -38,32 +29,24 @@
 					}
 					echo "</tr>";
 				}
-
-				?>
+			?>
 		</tbody>
 	</table>
-	<br>
+	<hr>
 	<?php echo $this->pagination->create_links(); ?>
 	<fieldset>
-            <div id="legend">
-            	
-              <legend class="">
-              	<div class="span4 offset9">
-              		<?php 
-    					$h=$link."0";
-    					echo "<a href='";
-    					echo $h;
-    					echo "'>"
-    				?>
-             	<button class="btn btn-success span8">
-              	<i class="icon-plus icon-white">
-              	</i>  <?php echo $button_text ?></button></a></div></legend>
-              
-            </div>
+        <div id="legend">
+             <div class="span4 offset9">
+             	<?php 
+    				$h=$link."0";
+    				echo "<a href='";
+    				echo $h;
+    				echo "'>"
+    			?>
+            	<button class="btn btn-success span8">
+            	<i class="icon-plus icon-white">
+            	</i>  <?php echo $button_text ?></button></a>
+        	</div>
+        </div>
     </fieldset>
-		
-		
-	</fieldset>
-
-	</div>
-</div>
+</fieldset>

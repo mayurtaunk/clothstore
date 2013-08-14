@@ -18,6 +18,11 @@ class Model_users extends CI_Model {
 						'username'=>$tdata['username'],
 						'key' => $tdata['key'],
 						'is_logged_in' => 1,
+						'search_product' => '',
+						'search_party' => '',
+						'search_purchase' => '',
+						'search_sales' => '',
+						'current_tab' => '',
 						'company_id' => $defval['value']
 					);
 				$this->session->set_userdata($data);

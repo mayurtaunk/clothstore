@@ -1,13 +1,11 @@
-
-<div class="row-fluid">
-	<div class="span10">
+<div class="thumbnail span12 center well well-small text-center">
+  	<FONT COLOR="BULE"> <B>Add Transaction</B></FONT> 
+</div>
 <?php
-echo start_widget('Transaction', anchor('transaction', '<span class="icon"><i class="icon-list"></i></span>'), 'nopadding');
-echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
+	echo start_widget('Transaction', anchor('transaction', '<span class="icon"><i class="icon-list"></i></span>'), 'nopadding');
+	echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 ?>
-
 <fieldset>	
-
 	<div class="control-group <?php echo (strlen(form_error('accountnumber')) > 0 ? 'error' : '') ?>">
 		<div class="control-label">Account Number</div>
 		<div class="controls">
@@ -17,20 +15,18 @@ echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 		</div>
 	</div>
 	<?php
-	if($showtype =='true')
-	{ 
-	?>
-		<div class="control-group <?php echo (strlen(form_error('type')) > 0 ? 'error' : '') ?> ">
+	if($showtype =='true'){ ?>
+	<div class="control-group <?php echo (strlen(form_error('type')) > 0 ? 'error' : '') ?> ">
 		<label class="control-label"> Transaction type</label>
-			<div class="controls">
-				<label class="radio">
-					<input type="radio" name="type" value="credit" <?php if ($row['type'] == 'credit') { echo 'checked=checked';} ?>>Credit
-				</label>
-				<label class="radio">
-					<input type="radio" name="type" value="debit" <?php if($row['type'] == 'debit') { echo 'checked=checked';} ?> > Debit
-				</label>
-			</div>
+		<div class="controls">
+			<label class="radio">
+				<input type="radio" name="type" value="credit" <?php if ($row['type'] == 'credit') { echo 'checked=checked';} ?>>Credit
+			</label>
+			<label class="radio">
+				<input type="radio" name="type" value="debit" <?php if($row['type'] == 'debit') { echo 'checked=checked';} ?> > Debit
+			</label>
 		</div>
+	</div>
 	<?php } ?>
 	<div class="control-group <?php echo (strlen(form_error('particular')) > 0 ? 'error' : '') ?>">
 		<div class="control-label">Particular</div>
@@ -51,14 +47,11 @@ echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 		<div class="controls">
 				<input type="text" class="span5" name="remarks" value="<?php echo $row['remarks']?>" placeholder="Enter Balance..."/>	
 		</div>
-	</div>
-	
+	</div>	
 </fieldset>
-
 <div class="form-actions">
 	<button type="submit" name="submit" value="1" class="btn btn-success" id="Update">Update</button>
 </div>
-
 </form>
 <script type="text/javascript">
   $(document).ready(function() {
@@ -99,5 +92,3 @@ echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 
   </script>
 <?php echo end_widget(); ?>
-</div>
-</div>
