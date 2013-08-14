@@ -1,59 +1,43 @@
-<div class="row-fluid">
-	<div class="span10">
-	
 <?php
-if(isset($popup))
-echo start_widget('Print Barcode');
-echo form_open($this->uri->uri_string()."/print_barcode", 'class="form-horizontal"');
-/*echo form_open("barcodegen/test_1D.html", 'class="form-horizontal"');*/
+	if(isset($popup))
+	echo start_widget('Print Barcode');
+	echo form_open($this->uri->uri_string()."/print_barcode", 'class="form-horizontal"');
+	/*echo form_open("barcodegen/test_1D.html", 'class="form-horizontal"');*/
 ?>
-
-	
-	<div class="row-fluid">
-		<div class="span12">
-			<fieldset>
-			<legend>Barcodes</legend>
-				<table class="table table-condensed table-striped">
-					<thead>	
-						<tr>
-							<th>Barcode</th>
-							<th>Quantity</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-							
-			 				<tr id="1" style="display: none;">
-								<td><input type="text" readonly="true" class="Numeric input-mini span12" name="new_barcode[]"  value="" /></td>
-								<td><input type="text" readonly="true" class="Numeric input-mini span12" name="new_quantity[]" value="" />
-
-								</td>
-								<td class="aligncenter"><span id="1"><a href="#" class="btn btn-danger btn-mini"><i class="icon-minus icon-white"></i></a></span></td>
-							</tr>
-
-							<tr id="Blank">
-								<td><input type="text" id="Barcode" class="Numeric input-mini span12" value="" /></td>
-								<td><input type="text" class="Numeric input-mini span12" value="" /></td>
-								<td class="aligncenter"><a href="javascript:make_copy(1)" class="btn btn-success btn-mini"><i class="icon-plus icon-white"></i></a></td>
-							</tr>
-					</tbody>
-				</table>
-			</fieldset>
-		</div>
+<div class="row-fluid">
+	<div class="span12">
+		<fieldset>
+		<legend>Barcodes</legend>
+			<table class="table table-condensed table-striped">
+				<thead>	
+					<tr>
+						<th>Barcode</th>
+						<th>Quantity</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+			 		<tr id="1" style="display: none;">
+						<td><input type="text" readonly="true" class="Numeric input-mini span12" name="new_barcode[]"  value="" /></td>
+						<td><input type="text" readonly="true" class="Numeric input-mini span12" name="new_quantity[]" value="" />
+						</td>
+						<td class="aligncenter"><span id="1"><a href="#" class="btn btn-danger btn-mini"><i class="icon-minus icon-white"></i></a></span></td>
+					</tr>
+					<tr id="Blank">
+						<td><input type="text" id="Barcode" class="Numeric input-mini span12" value="" /></td>
+						<td><input type="text" class="Numeric input-mini span12" value="" /></td>
+						<td class="aligncenter"><a href="javascript:make_copy(1)" class="btn btn-success btn-mini"><i class="icon-plus icon-white"></i></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
 	</div>
-
+</div>
 <div class="form-actions">
 	<button type="submit" name="submit" value="1" class="btn btn-success" id="Update">Print</button>
 </div>
-
 </form>
-
 <?php echo end_widget(); ?>
-
-	</div>
-</div>
-
-
 <script>
 
 var checked = 1;
