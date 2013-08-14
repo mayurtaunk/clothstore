@@ -116,6 +116,31 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
     ?>
     <script>
     $(function() {
+      $("#ajaxName").autocomplete({
+        source: "<?php echo site_url($cname.'/search')?>",
+        minLength: 0,
+        focus: function(event, ui) {
+          $("#ajaxName").val( ui.item.name);
+          return false;
+        },
+        select: function(event, ui) {
+          $("#ajaxName").val(ui.item.name);
+          $("#ajaxProductId").val(ui.item.id);
+          return false;
+        },
+        response: function(event, ui) {
+             if (ui.content.length == 0) {
+                $("#ajaxName").val('');
+            $("#ajaxProductId").val(0);
+             }
+            }
+      })
+      .data("autocomplete")._renderItem = function(ul, item) {
+        return $("<li></li>")
+          .data("item.autocomplete", item)
+          .append('<a><span class="blueDark">' + item.name +  '</span></a>')
+          .appendTo(ul);
+      }
       $(".DateTime").datepicker({
         duration: '',
         dateFormat: "dd-mm-yy",
@@ -147,7 +172,7 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
           <div class="nav-collapse collapse">
             <ul class="nav">
                 <li class="divider-vertical"></li>
-                <li><a href=<?php echo base_url("index.php/main/master") ?>><i class="icon-home icon-white"></i> Home</a></li>
+                <li  <?php if($this->session->userdata('current_tab') == 'dash') { echo "class='active'"; } ?>><a href=<?php echo base_url("index.php/main/master") ?>><i class="icon-home icon-white"></i> Home</a></li>
             </ul>
             <div class="pull-right">
               <ul class="nav pull-right">
@@ -171,35 +196,35 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
         <div class="well sidebar-nav">
           <ul class="nav nav-list">
             <li class="nav-header">Feed Data</li>
-            <li>
+            <li <?php if($this->session->userdata('current_tab') == 'party') { echo "class='active'"; } ?>>
             <?php echo anchor('party', 'Party List'); ?></li>
-            <li>
+            <li <?php if($this->session->userdata('current_tab') == 'product') { echo "class='active'"; } ?>>
             <?php echo anchor('product', 'Product List'); ?></li>
-            <li>
+            <li <?php if($this->session->userdata('current_tab') == 'purchase') { echo "class='active'"; } ?>>
             <?php echo anchor('purchase', 'Purchase List'); ?></li>
             <li class="nav-header">Sales</li>
-            <li>
+            <li <?php if($this->session->userdata('current_tab') == 'sales') { echo "class='active'"; } ?>>
               <?php echo anchor('sales', 'Sales List'); ?></li>
             </li>
             <li class="nav-header">Print</li>
-            <li>
+            <li <?php if($this->session->userdata('current_tab') == 'barcode') { echo "class='active'"; } ?>>
               <?php echo anchor('barcode', 'Print Barcode'); ?></li>
             </li>
             <li class="nav-header">Banking</li>
-            <!-- <li><?php echo anchor('account', 'Add Account'); ?></li> -->
-            <li><?php echo anchor('transaction/edit/0', 'Make a Transaction'); ?></li>
+            <!-- <li ><?php echo anchor('account', 'Add Account'); ?></li> -->
+            <li <?php if($this->session->userdata('current_tab') == 'trans') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/0', 'Make a Transaction'); ?></li>
             <li class="nav-header">Reports</li>
-            <li><?php echo anchor('reports/sale_report', 'Sale Report'); ?></li>
-            <li><?php echo anchor('reports/account_statement', 'Account Statement'); ?></li>
+            <li <?php if($this->session->userdata('current_tab') == 'sale_rep') { echo "class='active'"; } ?>><?php echo anchor('reports/sale_report', 'Sale Report'); ?></li>
+            <li <?php if($this->session->userdata('current_tab') == 'account_rep') { echo "class='active'"; } ?>><?php echo anchor('reports/account_statement', 'Account Statement'); ?></li>
             <li><a href="#">Yearly Report(Finacial)</a></li>
             <li class="nav-header">Out Bound Transaction</li>
-            <li><?php echo anchor('transaction/edit/lightbill', 'Light Bills'); ?></li>
-            <li><?php echo anchor('transaction/edit/telephonebill', 'Telephone Bills'); ?></li>
-            <li><?php echo anchor('transaction/edit/employeesalary','Employee Salary');?></li>
-            <li><?php echo anchor('transaction/edit/taxes','Taxes');?></li>
-            <li><?php echo anchor('transaction/edit/other','Others');?></li>
+            <li <?php if($this->session->userdata('current_tab') == 'translight') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/lightbill', 'Light Bills'); ?></li>
+            <li <?php if($this->session->userdata('current_tab') == 'transtele') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/telephonebill', 'Telephone Bills'); ?></li>
+            <li <?php if($this->session->userdata('current_tab') == 'transsal') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/employeesalary','Employee Salary');?></li>
+            <li <?php if($this->session->userdata('current_tab') == 'tax') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/taxes','Taxes');?></li>
+            <li <?php if($this->session->userdata('current_tab') == 'other') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/other','Others');?></li>
             <li class="nav-header">In Bound Transaction</li>
-            <li><?php echo anchor('transaction/edit/inbound','In Bound');?></li>
+            <li <?php if($this->session->userdata('current_tab') == 'inbnd') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/inbound','In Bound');?></li>
           </ul>
         </div><!--/.well -->
         </div><!--/span-->
@@ -208,7 +233,7 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
           <div class="thumbnail span12 center well well-small text-center">
             <form id="custom-search-form" class="form-search form-horizontal pull-right">
               <?php echo "(". $help; ?>
-              <?php echo "<b>". $hhelp. "</b>)"; ?>
+              <?php echo "<b>". $hhelp. "</b>) (<i>Please Wait for 'wait cursor' then press enter</i>)"; ?>
               <div class="input-append">
                 <input type="text" class="search-query"  id="ajaxName" placeholder=<?php echo $dta; ?>>
                 <button type="submit" class='btn' href=<?php $this->uri->uri_string() ?>><i class="icon-search"></i></button>

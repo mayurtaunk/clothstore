@@ -8,6 +8,10 @@ class Dashboard extends CI_Controller {
 	}
 
 	public function index() {
+		$sudata =array (
+						'current_tab' => 'dash'
+					);
+			$this->session->set_userdata($sudata);
 		/*User Validation Start*/
 		$canlog=$this->radhe->canlogin();
 		if ($canlog!=1)

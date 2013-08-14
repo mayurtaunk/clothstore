@@ -1,3 +1,6 @@
+<div class="thumbnail span12 center well well-small text-center">
+  	<FONT COLOR="BULE"> <B>View Account Statement</B></FONT> 
+</div>
 <?php
 echo start_widget($page_title);
 echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
@@ -60,7 +63,7 @@ echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 	</div>
 
 <div class="form-actions">
-	<button type="submit" name="submit" value="1" class="btn btn-success" id="Update">Search</button>
+	<button type="submit" name="submit" value="1" class="btn btn-success pull-right" id="Update">Search</button>
 </div>
 
 </form>
