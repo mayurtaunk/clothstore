@@ -1,6 +1,3 @@
-<div class="row-fluid">
-	<div class="span10">
-	
 <?php
 echo start_widget($page_title);
 echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
@@ -69,10 +66,6 @@ echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 </form>
 
 <?php echo end_widget(); ?>
-
-	</div>
-</div>
-
 
 <script>
 

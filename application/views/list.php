@@ -36,7 +36,6 @@
 	<?php echo $this->pagination->create_links(); ?>
 	<fieldset>
         <div id="legend">
-            <legend class="">
              <div class="span4 offset9">
              	<?php 
     				$h=$link."0";
