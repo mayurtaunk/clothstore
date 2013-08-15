@@ -21,7 +21,6 @@ class Product extends CI_Controller {
 		/*pagination Start*/
 		$this->load->library('pagination');
 		$config['base_url'] = base_url().'index.php/product/index/';
-		$config['total_rows'] = $this->db->count_all('products');
 		$config['per_page'] = 7;
 		$config['num_links']=20;
 		$config['full_tag_open'] = '<div class="pagination"><ul>';
@@ -42,6 +41,12 @@ class Product extends CI_Controller {
 		$config['cur_tag_close'] = '</a></li>';
 		$config['num_tag_open'] = '<li>';
 		$config['num_tag_close'] = '</li>';
+		$sqlquery = "SELECT COUNT(id) AS recount	 
+					 FROM products 
+					 WHERE name LIKE '%" . $this->session->userdata('search_product') . "%'
+					 AND company_id=". $this->session->userdata('company_id');
+		$reco = $this->radhe->getrowarray($sqlquery);
+		$config['total_rows'] = $reco['recount'];
 		$this->pagination->initialize($config);
 		/*pagination Setting End*/
 

@@ -42,6 +42,26 @@ class Purchase extends CI_Controller {
 		$config['cur_tag_close'] = '</a></li>';
 		$config['num_tag_open'] = '<li>';
 		$config['num_tag_close'] = '</li>';
+		$sqlquery = "";
+		$skey=$this->session->userdata('search_purchase');
+		if($this->session->userdata('key') == "1")
+		{
+			$sqlquery = "SELECT COUNT(PU.id) AS recount
+								   FROM purchases PU INNER JOIN parties P 
+								   ON PU.party_id = P.id
+								   WHERE (P.name LIKE '%". $skey .  "%' OR PU.bill_no LIKE '%" .$skey. "%') AND PU.company_id=". $this->session->userdata('company_id');
+			
+		}
+		else
+		{
+			$sqlquery = "SELECT COUNT(PU.id) AS recount
+								   FROM purchases PU INNER JOIN parties P 
+								   ON PU.party_id = P.id
+								   WHERE (P.name LIKE '%". $skey .  "%' OR PU.bill_no LIKE '%" .$skey. "%') AND PU.company_id=". $this->session->userdata('company_id') . "
+								   AND recieved=1";
+		}
+		$reco = $this->radhe->getrowarray($sqlquery);
+		$config['total_rows'] = $reco['recount'];
 		$this->pagination->initialize($config);
 		/*pagination Setting End*/
 
@@ -55,7 +75,7 @@ class Purchase extends CI_Controller {
 		$sqlquery="";
 		$data['help']="Please enter Party name OR Bill Number";
 		$data['hhelp'] ="| Ex. Shukla | Ex. G32";
-		$skey=$this->session->userdata('search_purchase');
+		
 		if($this->session->userdata('key') == "1")
 		{
 			$uri=($this->uri->segment(3) == null) ? 0 : $this->uri->segment(3);

@@ -41,6 +41,17 @@ class Sales extends CI_Controller {
 		$config['cur_tag_close'] = '</a></li>';
 		$config['num_tag_open'] = '<li>';
 		$config['num_tag_close'] = '</li>';
+		$skey=$this->session->userdata('search_sales');
+		$sqlquery = "SELECT 
+				     COUNT(S.id) as recount
+					 FROM sales S 
+					 INNER JOIN sale_details SD ON S.id = SD.sale_id
+					 WHERE S.company_id=" . $this->session->userdata('company_id') . " 
+					 AND SD.sale_id=S.id 
+					 AND (S.party_name LIKE '%" . $skey . "%' OR S.datetime LIKE '%" . $skey . "%')
+					 GROUP BY S.id";
+		$reco = $this->radhe->getrowarray($sqlquery);
+		$config['total_rows'] = $reco['recount'];
 		$this->pagination->initialize($config);
 		/*pagination Setting End*/
 

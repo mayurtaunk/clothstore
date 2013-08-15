@@ -68,7 +68,7 @@ class Dashboard extends CI_Controller {
 					 INNER JOIN parties PA ON PA.id=P.party_id
 					 LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
 					 WHERE P.company_id=".$this->session->userdata('company_id'). 
-					 " GROUP BY PD.barcode ORDER BY stock";			 
+					 " GROUP BY PD.barcode ORDER BY stock LIMIT 0,7";			 
 		}
 		else
 		{
@@ -86,7 +86,7 @@ class Dashboard extends CI_Controller {
 					 INNER JOIN parties PA ON PA.id=P.party_id
 					 LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
 					 WHERE P.recieved = 1 AND P.company_id=".$this->session->userdata('company_id'). 
-					 " GROUP BY PD.id ORDER BY stock";			 	
+					 " GROUP BY PD.id ORDER BY stock LIMIT 0,7";			 	
 		}
 
 					 $dt=$this->radhe->getresultarray($sql);
