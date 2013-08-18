@@ -69,6 +69,7 @@ class Dashboard extends CI_Controller {
 					 LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
 					 WHERE P.company_id=".$this->session->userdata('company_id'). 
 					 " GROUP BY PD.barcode ORDER BY stock LIMIT 0,10";			 
+
 		}
 		else
 		{
@@ -87,6 +88,7 @@ class Dashboard extends CI_Controller {
 					 LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
 					 WHERE P.recieved = 1 AND P.company_id=".$this->session->userdata('company_id'). 
 					 " GROUP BY PD.id ORDER BY stock LIMIT 0,10";			 	
+
 		}
 
 					 $dt=$this->radhe->getresultarray($sql);
