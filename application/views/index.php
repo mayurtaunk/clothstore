@@ -160,6 +160,24 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
   </head>
   <body>
+  <?php if(isset($okalert)) {?>
+  <div class="alert alert-success pull-right">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Warning!</strong><?php echo $okalert;?>
+</div>
+  <?php } ?>
+  <?php if(isset($notokalert)) {?>
+  <div class="alert alert-error pull-right">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Warning!</strong><?php echo $notokalert;?>
+</div>
+  <?php } ?>
+   <?php if(isset($infoalert)) {?>
+  <div class="alert alert-info pull-right">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Information!  </strong><?php echo $infoalert;?>
+</div>
+  <?php } ?>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">

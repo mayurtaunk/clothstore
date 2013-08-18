@@ -75,6 +75,7 @@ class Party extends CI_Controller {
 		$data['button_text']='Add New Party';
 		$data['cname'] = 'party';
 		$data['dta'] =  $this->session->userdata['search_party'];
+		$this->firephp->info($data);exit;
 		/*Prepare List View End*/
 		$this->load->view('index',$data);
 	}
@@ -123,7 +124,6 @@ class Party extends CI_Controller {
 			$data['focus_id'] = 'Name';
 			$data['title'] = 'Party Edit';
 			$data['page'] = 'party_edit';
-	
 			
 			$this->load->view('index', $data);
 		}
@@ -147,7 +147,8 @@ class Party extends CI_Controller {
 				$new_id = $query->row_array();
 				$id = $new_id['LAST_INSERT_ID()'];
 			}
-			else {
+			else 
+			{
 				$this->db->update('parties', $data, "id = '" . $data['id'] . "'");
 				$id = $data['id'];
 			}
