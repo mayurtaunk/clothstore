@@ -167,6 +167,7 @@ class Purchase extends CI_Controller {
 			
 			//$this->firephp->info($totalamount);exit;
 			$setrec = $this->input->post('recieved');
+			//$this->firephp->info($setrec == null);exit;
 			$data = array(
 				'id' => $this->input->post('id'),
 				'company_id'=>$this->session->userdata('company_id'),
@@ -175,7 +176,7 @@ class Purchase extends CI_Controller {
 				'bill_no' => $this->input->post('bill_no'),
 				'amount' => $this->input->post('amount'),
 				'amount_paid' => $this->input->post('amountpaid'),
-				'recieved'=>($setrec != null) ? 1 : 0,
+				'recieved'=>($setrec == null) ? 1 : $setrec,
 				/*'id2'=> ($this->input->post('id')==0 && $this->input->post('recieved')==1) ? $this->radhe->getid('purchases','id2') : 0*/
 			);
 			//$this->firephp->info($data['id']);exit;
