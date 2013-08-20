@@ -48,6 +48,7 @@
 		  </div>
 		</div>
 		<?php }?>
+
 	</fieldset>
 	<hr>
 	<div class="row-fluid">

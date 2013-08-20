@@ -82,7 +82,7 @@
             <!-- Button -->
             <div class="controls">
               <button class="btn btn-success">Login</button>
-              <!-- <a href=<?php echo base_url("index.php/main/signup");?>> SignUp </a> -->
+                <a href=<?php echo base_url("index.php/main/signup");?>> SignUp </a>
             </div>
           </div>
           </fieldset>
