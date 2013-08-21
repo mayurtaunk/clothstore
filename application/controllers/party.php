@@ -75,7 +75,7 @@ class Party extends CI_Controller {
 		$data['button_text']='Add New Party';
 		$data['cname'] = 'party';
 		$data['dta'] =  $this->session->userdata['search_party'];
-		$this->firephp->info($data);exit;
+		//$this->firephp->info($data);exit;
 		/*Prepare List View End*/
 		$this->load->view('index',$data);
 	}

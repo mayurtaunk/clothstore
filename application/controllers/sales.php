@@ -240,10 +240,17 @@ class Sales extends CI_Controller {
 					);
 					$this->db->update('sales', $updatequery, "id = '" . $id . "'");	
 				}
-				
+				$query = $this->db->query("SELECT id, party_name, party_contact,less,amount,amount_recieved
+									FROM sales 
+								   	WHERE id =".$id. " AND company_id=". $this->session->userdata('company_id'));
+				$row = $query->result_array();
+				$data['row']=$row[0];
+				$this->load->view('index', $data);
+				//$this->firephp->info($data);exit;
 			}
+			
 			/*Updation End*/
-			$this->load->view('index', $data);
+			
 		}
 		else 
 		{
@@ -442,7 +449,7 @@ class Sales extends CI_Controller {
 				'amount' => $topay
 			);
 			$this->db->update('sales', $updateqfin, "id = '" . $id . "'");
-			$this->load->view('index',$data);
+			//$this->load->view('index',$data);
 			redirect("sales/edit/".$id."");
 		}	
 		
@@ -497,13 +504,52 @@ class Sales extends CI_Controller {
 	}
 	function ajaxBarcode() 
 	{
-		
+			if($this->session->userdata('key') == 0)
+			{
+				$search = strtolower($this->input->get('term'));	
+				$sql = "SELECT PD.id, PD.barcode
+				FROM purchase_details PD INNER JOIN purchases P ON P.id = PD.purchase_id 
+				WHERE PD.barcode LIKE '%$search%' AND PD.sold = 0 AND P.company_id = ".$this->session->userdata['company_id'].
+				" GROUP BY PD.barcode ORDER BY PD.barcode";
+				$this->_getautocomplete($sql);
+			}
+			else
+			{
+				$search = strtolower($this->input->get('term'));	
+				$sql = "SELECT PD.id, PD.barcode
+				FROM purchase_details PD INNER JOIN purchases P ON P.id = PD.purchase_id 
+				WHERE PD.barcode LIKE '%$search%' AND PD.sold = 0 AND P.recieved = 1 AND P.company_id = ".$this->session->userdata['company_id'].
+				" GROUP BY PD.barcode ORDER BY PD.barcode";
+				$this->_getautocomplete($sql);
+			}
+			
+	}
+	function ajaxProdcutseach() 
+	{
+
+		if($this->session->userdata('key') == 0)
+		{
 			$search = strtolower($this->input->get('term'));	
-			$sql = "SELECT PD.id, PD.barcode 
-			FROM purchase_details PD INNER JOIN purchases P ON P.id = PD.purchase_id 
-			WHERE PD.barcode LIKE '%$search%' AND PD.sold = 0 AND P.company_id = ".$this->session->userdata['company_id'].
-			" GROUP BY PD.barcode ORDER BY PD.barcode";
+			$sql = "SELECT PR.name, PD.barcode
+			FROM purchase_details PD 
+			INNER JOIN purchases P ON P.id = PD.purchase_id 
+			INNER JOIN products PR ON PD.product_id = P.id
+			WHERE PR.name LIKE '%$search%' AND PD.sold = 0 AND P.company_id = ".$this->session->userdata['company_id'].
+			" GROUP BY PR.name ORDER BY PR.name";
 			$this->_getautocomplete($sql);
+		}
+		else
+		{
+			$search = strtolower($this->input->get('term'));	
+			$sql = "SELECT PR.name, PD.barcode
+			FROM purchase_details PD 
+			INNER JOIN purchases P ON P.id = PD.purchase_id 
+			INNER JOIN products PR ON PD.product_id = P.id
+			WHERE PR.name LIKE '%$search%' AND PD.sold = 0 AND P.recieved = 1 AND P.company_id = ".$this->session->userdata['company_id'].
+			" GROUP BY PR.name ORDER BY PR.name";
+			$this->_getautocomplete($sql);
+		}
+			
 		
 	}
 	function search() {

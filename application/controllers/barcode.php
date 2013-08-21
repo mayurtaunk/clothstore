@@ -40,17 +40,15 @@ class Barcode extends CI_Controller {
 			}
 		}
 		echo '[' . join(',', $data) . ']';
-		$this->firephp->info($data);exit;
 	}
 
 
 	function ajaxBarcode() {
-		
-			$search = strtolower($this->input->get('term'));
-			$sql = "SELECT barcode as name,id
-			FROM purchase_details
-			WHERE barcode LIKE '%$search%' 
-			GROUP BY barcode ORDER BY barcode ";
+			$search = strtolower($this->input->get('term'));	
+			$sql = "SELECT PD.id, PD.barcode as name
+			FROM purchase_details PD INNER JOIN purchases P ON P.id = PD.purchase_id 
+			WHERE PD.barcode LIKE '%$search%' AND PD.sold = 0 AND P.company_id = ".$this->session->userdata['company_id'].
+			" GROUP BY PD.barcode ORDER BY PD.barcode";
 			$this->_getautocomplete($sql);
 		
 	}
