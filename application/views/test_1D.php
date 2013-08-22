@@ -27,19 +27,33 @@
     img { padding-left: 10px;
           padding-bottom: 50px;
         }
+        .fixedheight { height: 100px; position:relative; }
+        .bottomaligned {position:relative; top:80%; height:4em; margin-top:0em}
+        legend { margin:3px; text-align:center;width:100%}
     </style>
+    <link href="<?php echo base_url('css/bootstrap.min.css') ?>" rel="stylesheet" />
 </head>
 <body>
 <body>
-  <?php /*$this->firephp->info($new_barcode);exit;*/
+    <br>
+    <ul class='thumbnails'>
+  <?php
+    $cpname=$this->radhe->getrowarray("select * from companies where id=".$this->session->userdata('company_id'));
+   
     foreach ($new_barcode as $key => $value) {
-      for ($i=0; $i < $new_quantity[$key]; $i++) { 
-      /*  $this->firephp->info(base_url("barcodegen/test_1D.php?text=".$value));exit;*/
-        echo '<img src="'.base_url("barcodegen/test_1D.php?text=".$value).'"alt="barcode" /> &nbsp &nbsp &nbsp &nbsp';
+      for ($i=0; $i < $new_quantity[$key]; $i++) {
+        $price=$this->radhe->getrowarray("select * from purchase_details where barcode='".$value."'");
+
+                echo "<li class='span3'>";
+                    echo "<div class='thumbnail'>";
+                        echo "<h5 align='center'>".$cpname['name']."</h5>";
+                        echo "<img src=".base_url('barcodegen/test_1D.php?text='.$value)." alt=''>";
+                        echo "<p align='center' style='height : 50px'>MRP: <b><i>INR ".$price['mrp']."/-</i></b> </p>";
+                    echo "</div>";
+                echo "</li>";
       }
     }
   ?>
-  
-
+</ul>
 </body>
 </html>

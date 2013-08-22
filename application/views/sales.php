@@ -1,5 +1,11 @@
 <div class="thumbnail span12 center well well-small text-center">
-  	<FONT COLOR="BULE"> <B>Add | Update Sales Information</B></FONT> 
+  	<FONT COLOR="BULE"> <B>Add | Update Sales Information</B></FONT>
+<hr>
+                <div class="controls span12  pull-right">
+           		Search Barcode
+                  <input type="text" class="span4" id="productsearch" name="productsearch" placeholder="Please enter the product name"/>
+                  <input type="text" class="span2" id ="pdcode"  name="pdcode"  />
+                </div>
 </div>
 <?php
 echo start_widget('Sales Entry', anchor('sales', '<span class="icon"><i class="icon-list"></i></span>'), 'nopadding');
@@ -27,7 +33,7 @@ echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 				<input type="hidden" id ="purchase_autocomplete_id"  name="purchase_autocomplete_id"  />
 				<input type="text" class="span8" id="barcode" name="sel_barcode" placeholder="Please Hit the Barcode..."/>
 				<input type="text" class="span1" id="sel_qty" name="sel_qty" value="1" placeholder="Quantity"/>			
-					<button type="submit" name="submit" value="1" class="btn btn-success" id="Update">Update</button> 
+				<button type="submit" name="submit" value="1" class="btn btn-success" id="Update">Update</button> 
 				<?php if($id > 0) : 
 				?> 
 				&nbsp;&nbsp;<?php 
@@ -88,7 +94,7 @@ echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 					<tr>
 						<td></td>
 						<td>Discount</td>
-						<td colspan=2><input type="text" class="Numeric span8" name="discount" value="<?php echo $discount?>" placeholder="Discount" /></td>
+						<td colspan=2><input type="text" class="Numeric span8" name="discount" value="<?php echo $row['less']?>" placeholder="Discount" /></td>
 						<td></td>
 						<td></td>
 					</tr>
@@ -149,6 +155,33 @@ $(document).ready(function() {
 				return $("<li></li>")
 					.data("item.autocomplete", item)
 					.append('<a><span class="blueDark">' + item.barcode +  '</span></a>')
+					.appendTo(ul);
+			}
+});
+$(document).ready(function() {
+	$("#productsearch").autocomplete({
+				source: "<?php echo site_url('sales/ajaxProdcutseach') ?>",
+				minLength: 0,
+				focus: function(event, ui) {
+					$("#productsearch").val(ui.item.name);
+					return false;
+				},
+				select: function(event, ui) {
+					$("#productsearch").val(ui.item.name);
+					$("#pdcode").val(ui.item.barcode);
+					return false;
+				},
+				response: function(event, ui) {
+		         if (ui.content.length == 0) {
+		            $("#productsearch").val('');
+					$("#pdcode").val('');
+		         }
+		        }
+			})
+			.data("autocomplete")._renderItem = function(ul, item) {
+				return $("<li></li>")
+					.data("item.autocomplete", item)
+					.append('<a><span class="blueDark">' + item.name +  '</span></a>')
 					.appendTo(ul);
 			}
 });

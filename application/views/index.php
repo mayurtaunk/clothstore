@@ -157,6 +157,16 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
       });
     });
     </script>
+     <script>
+      $(function() {
+        $( "#datepicker" ).datepicker();
+        $( "#datepicker" ).datepicker( "option", "dateFormat", "dd-mm-yy" );
+      });
+      $(function() {
+        $( "#datepicker1" ).datepicker();
+        $( "#datepicker1" ).datepicker( "option", "dateFormat", "dd-mm-yy" );
+      });
+      </script>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
   </head>
   <body>
@@ -208,9 +218,46 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
         </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span2">
+    <div class="navbar">
+            <div class="navbar-inner">
+              <div class="container">
+                <ul class="nav">
+                  <li <?php if($this->session->userdata('current_tab') == 'party') { echo "class='active'"; } ?>> <a href=<?php echo site_url('party');?>><img src=<?php echo base_url('img/tags/party.png'); ?> style="width : 70px; height : 70px;">Party</a></li>
+                  <li <?php if($this->session->userdata('current_tab') == 'product') { echo "class='active'"; } ?>> <a href=<?php echo site_url('product');?>><img src=<?php echo base_url('img/tags/products.png'); ?> style="width : 70px; height : 70px;">Product</a></li>
+                  <li <?php if($this->session->userdata('current_tab') == 'purchase') { echo "class='active'"; } ?>> <a href=<?php echo site_url('purchase');?>><img src=<?php echo base_url('img/tags/purchase.png'); ?> style="width : 70px; height : 70px;">Purchase</a></li>
+                  <li class="divider-vertical"></li>
+                  <li <?php if($this->session->userdata('current_tab') == 'sales') { echo "class='active'"; } ?>> <a href=<?php echo site_url('sales');?>><img src=<?php echo base_url('img/tags/sale.png'); ?> style="width : 70px; height : 70px;">Sales</a></li>
+                  <li class="divider-vertical"></li>
+                  <li <?php if($this->session->userdata('current_tab') == 'barcode') { echo "class='active'"; } ?>> <a href=<?php echo site_url('barcode');?>><img src=<?php echo base_url('img/tags/barcode.png'); ?> style="width : 70px; height : 70px;"> Barcode</a></li>
+                  <li class="divider-vertical"></li>
+                  <!-- <li ><?php echo anchor('account', 'Add Account'); ?></li> -->
+                  <?php  $ch=$this->session->userdata('current_tab'); ?>
+                  <li class="dropdown <?php if( $ch == 'trans' || $ch == 'translight' || $ch == 'transtele' || $ch == 'transsal' || $ch == 'tax' || $ch == 'other') { echo 'active'; } ?>" >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src=<?php echo base_url('img/tags/trans.png'); ?> style="width : 70px; height : 70px;">Transaction</a>
+                      <ul class="dropdown-menu">
+                        <li <?php if($this->session->userdata('current_tab') == 'trans') { echo "class='active'"; } ?>> <a href=<?php echo site_url('transaction/edit/0');?>><img src=<?php echo base_url('img/tags/transman.png'); ?> style="width : 50px; height : 50px;"> Transaction</a></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'translight') { echo "class='active'"; } ?>> <a href=<?php echo site_url('transaction/edit/lightbill');?>><img src=<?php echo base_url('img/tags/elect.png'); ?> style="width : 50px; height : 50px;">Light Bill</a></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'transtele') { echo "class='active'"; } ?>> <a href=<?php echo site_url('transaction/edit/telephonebill');?>><img src=<?php echo base_url('img/tags/tele.png'); ?> style="width : 50px; height : 50px;">Telephone Bill</a></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'transsal') { echo "class='active'"; } ?>> <a href=<?php echo site_url('transaction/edit/employeesalary');?>><img src=<?php echo base_url('img/tags/emp.png'); ?> style="width : 50px; height : 50px;">Employee Salary</a></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'tax') { echo "class='active'"; } ?>> <a href=<?php echo site_url('transaction/edit/taxes');?>><img src=<?php echo base_url('img/tags/tax.png'); ?> style="width : 50px; height : 50px;">Tax</a></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'other') { echo "class='active'"; } ?>> <a href=<?php echo site_url('transaction/edit/other');?>><img src=<?php echo base_url('img/tags/misc.png'); ?> style="width : 50px; height : 50px;">Misc</a></li>
+                        <li class="divider"></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'inbnd') { echo "class='active'"; } ?>> <a href=<?php echo site_url('transaction/edit/inbound');?>><img src=<?php echo base_url('img/tags/inbo.png'); ?> style="width : 50px; height : 50px;">INbound</a></li>
+                      </ul>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src=<?php echo base_url('img/tags/repo.png'); ?> style="width : 70px; height : 70px;">Reports</a>
+                      <ul class="dropdown-menu">
+                        <li <?php if($this->session->userdata('current_tab') == 'cst_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/creditreport');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Customer Credit</a></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'sale_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/sale_report');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Sale Report</a></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'account_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/account_statement');?>><img src=<?php echo base_url('img/tags/acc_rep.png'); ?> style="width : 50px; height : 50px;">Account Report</a></li>
+                      </ul>
+                  </li>
+                </ul> 
+              </div>
+            </div>
+          </div>
+        <!-- <div class="span2">
         <div class="well sidebar-nav">
           <ul class="nav nav-list">
             <li class="nav-header">Feed Data</li>
@@ -229,7 +276,7 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
               <?php echo anchor('barcode', 'Print Barcode'); ?></li>
             </li>
             <li class="nav-header">Banking</li>
-            <!-- <li ><?php echo anchor('account', 'Add Account'); ?></li> -->
+            <!-- <li ><?php echo anchor('account', 'Add Account'); ?></li>
             <li <?php if($this->session->userdata('current_tab') == 'trans') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/0', 'Make a Transaction'); ?></li>
             <li class="nav-header">Reports</li>
             <li <?php if($this->session->userdata('current_tab') == 'sale_rep') { echo "class='active'"; } ?>><?php echo anchor('reports/sale_report', 'Sale Report'); ?></li>
@@ -244,8 +291,12 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
             <li class="nav-header">In Bound Transaction</li>
             <li <?php if($this->session->userdata('current_tab') == 'inbnd') { echo "class='active'"; } ?>><?php echo anchor('transaction/edit/inbound','In Bound');?></li>
           </ul>
-        </div><!--/.well -->
-        </div><!--/span-->
+        </div>/.well
+        </div>/span-->
+        <div class="row-fluid">      
+        <div class="container-fluid">
+        <div class="span1">
+          </div>
         <div class="well span10">
         <?php if(isset($cname)){?>
           <div class="thumbnail span12 center well well-small text-center">
@@ -264,6 +315,7 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
           $this->load->view($page);
         ?> 
         </div>
+
       </div><!--/row  fluid-->
   </div><!--/.fluid-container-->
   <footer>
