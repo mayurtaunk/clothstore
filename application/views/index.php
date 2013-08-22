@@ -141,7 +141,7 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
           .append('<a><span class="blueDark">' + item.name +  '</span></a>')
           .appendTo(ul);
       }
-      $(".DateTime").datepicker({
+      /*$(".DateTime").datepicker({
         duration: '',
         dateFormat: "dd-mm-yy",
         yearRange: "-50:+1",
@@ -152,12 +152,12 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
         showOtherMonths: true,
         showStatus: true,
         showOn: "button",
-        buttonImage: "<?php echo base_url('images/calendar.png') ?>",
+        buttonImage: "<?php echo base_url('img/calendar.png'); ?>",
         buttonImageOnly: true
-      });
+      });*/
     });
     </script>
-     <script>
+  <script>
       $(function() {
         $( "#datepicker" ).datepicker();
         $( "#datepicker" ).datepicker( "option", "dateFormat", "dd-mm-yy" );
