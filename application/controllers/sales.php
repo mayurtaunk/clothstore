@@ -194,6 +194,7 @@ class Sales extends CI_Controller {
 				'party_name' => '',
 				'party_contact' => '',
 				'amount_recieved' => '',
+				'less' => ''
 			);
 			$data['total']=0;
 			$data['item']=0;
@@ -245,9 +246,12 @@ class Sales extends CI_Controller {
 								   	WHERE id =".$id. " AND company_id=". $this->session->userdata('company_id'));
 				$row = $query->result_array();
 				$data['row']=$row[0];
-				$this->load->view('index', $data);
 				//$this->firephp->info($data);exit;
+				
+
+				
 			}
+			$this->load->view('index', $data);
 			
 			/*Updation End*/
 			
@@ -450,8 +454,9 @@ class Sales extends CI_Controller {
 			);
 			$this->db->update('sales', $updateqfin, "id = '" . $id . "'");
 			//$this->load->view('index',$data);
-			redirect("sales/edit/".$id."");
-		}	
+			redirect("sales/edit/".$id."");	
+		}
+
 		
 	}
 	function preview($id) {

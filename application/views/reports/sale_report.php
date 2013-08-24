@@ -43,11 +43,11 @@
 				<tbody>
 					<?php if(isset($rows)) {
 							foreach ($rows as $r) {
-								echo '<tr>
-									  <td>'.$r['date'].'</td>
-										<td>'.$r['product'].'</td>
-										<td>'.$r['quantity'].'</td>
-									  </tr>';
+								echo "<tr id='tablerow'>
+									  <td>".$r['date']."</td>
+										<td>".$r['product']."</td>
+										<td>".$r['quantity']."</td>
+									  </tr>";
 							}
 						}
 					 ?>
@@ -62,7 +62,10 @@
 </form>
 <?php echo end_widget(); ?>
 <script>
+
 $(document).ready(function() {
+	
+	
 	$("#ProductName").autocomplete({
 				source: "<?php echo site_url('purchase/ajaxProduct') ?>",
 				minLength: 0,
