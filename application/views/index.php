@@ -10,8 +10,10 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
     <meta charset="utf-8">
     <?php
+           
          if(isset($title))
             echo "<title>".$title."</title>";
          else
@@ -158,13 +160,24 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
     });
     </script>
   <script>
+
       $(function() {
-        $( "#datepicker" ).datepicker();
-        $( "#datepicker" ).datepicker( "option", "dateFormat", "dd-mm-yy" );
+           $( "#datepicker" ).datepicker({
+        numberOfMonths: 3,
+        showButtonPanel: true
+        });
+        $( "#datepicker" ).datepicker("option", "dateFormat", "dd-mm-yy" );
+        $( "#datepicker" ).datepicker( "option", "showAnim", "slideDown");
+        
       });
       $(function() {
-        $( "#datepicker1" ).datepicker();
-        $( "#datepicker1" ).datepicker( "option", "dateFormat", "dd-mm-yy" );
+         $( "#datepicker1" ).datepicker({
+        numberOfMonths: 3,
+        showButtonPanel: true
+        });
+        $( "#datepicker1" ).datepicker("option", "dateFormat", "dd-mm-yy" );
+       $( "#datepicker1" ).datepicker( "option", "showAnim", "slideDown");
+    
       });
       </script>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
@@ -249,6 +262,7 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src=<?php echo base_url('img/tags/repo.png'); ?> style="width : 70px; height : 70px;">Reports</a>
                       <ul class="dropdown-menu">
                         <li <?php if($this->session->userdata('current_tab') == 'cst_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/creditreport');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Customer Credit</a></li>
+                        <li <?php if($this->session->userdata('current_tab') == 'pur_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/purchasecredit');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Purchase Credit</a></li>
                         <li <?php if($this->session->userdata('current_tab') == 'sale_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/sale_report');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Sale Report</a></li>
                         <li <?php if($this->session->userdata('current_tab') == 'account_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/account_statement');?>><img src=<?php echo base_url('img/tags/acc_rep.png'); ?> style="width : 50px; height : 50px;">Account Report</a></li>
                       </ul>

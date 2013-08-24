@@ -4,6 +4,7 @@
 <?php
 echo start_widget('Product Information', anchor('product', '<span class="icon"><i class="icon-list"></i></span>'), 'nopadding');
 echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
+
 ?>
 <fieldset>		
 	<div class="control-group <?php echo (strlen(form_error('name')) > 0 ? 'error' : '') ?>">

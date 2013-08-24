@@ -4,7 +4,9 @@
         window.location = $(this).data('href');
         return false;
     });
+
 	});
+     
 </script>
 <fieldset>		
 	<table class="table table-striped ">
@@ -38,7 +40,7 @@
         <div id="legend">
              <div class="span4 offset9">
              	<?php 
-    				$h=$link."0";
+    				$h=base_url().'index.php/'.$link."0";
     				echo "<a href='";
     				echo $h;
     				echo "'>"

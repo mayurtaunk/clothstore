@@ -1,5 +1,5 @@
 <div class="thumbnail span12 center well well-small text-center">
-  	<FONT COLOR="BULE"> <B>View Credit Report</B></FONT> 
+  	<FONT COLOR="BULE"> <B><?php echo $headd; ?></B></FONT> 
 </div>
 <?php
 	echo start_widget($page_title);
@@ -32,7 +32,7 @@
 	<div class="span12">
 		<fieldset>
 		<legend>Bill Items</legend>
-			<table class="table table-condensed table-striped">
+			<table class="table table-condensed ">
 				<thead>	
 				</tr>
 						<?php if(isset($heading)) {
@@ -41,26 +41,54 @@
 									  '.$h.'</th>';
 							}
 						}
-					 	?>
+				?>
 				</tr>
 				</thead>
 				<tbody>
-					<?php if(isset($rows)) {
-							foreach ($rows as $r) {
-								echo '<tr>
-									  <td>'.$r['id'].'</td>
-									  <td>'.$r['party_name'].'</td>
-								      <td>'.$r['party_contact'].'</td>
-								      <td>'.$r['date'].'</td>
-								      <td>'.$r['totalbill'].'</td>
-								      <td>'.$r['paid'].'</td>
-								      <td>'.$r['topay'].'</td>
-									  </tr>';
+					<?php
+					
+						foreach ($rows as $value) {
+							
+							echo "<tr class='info'>";
+							foreach($fields as $col){
+								if(isset($link_col) && isset($link_url) && $link_col == $col)
+								echo "<td>".anchor($link_url . $value[$col], $value[$col])."</td>";
+								else
+								echo "<td>".$value[$col]."</td>";
 							}
+							echo "</tr>";
 						}
-					 ?>
+					?>
+					<tr></tr>
+					<?php if(isset($summary))
+					{
+						if(isset($summary['totalbill']))
+						{
+							$totalbill="Rupees " .number_format($summary['totalbill']). "/-";
+							$paid="Rupees " .number_format($summary['paid'])."/-";
+							$topay="Rupees " .number_format($summary['topay'])."/-";
+						}
+						else
+						{
+							$totalbill="Tota Bill";
+							$paid="Total Paid";
+							$topay="Total To Pay";
+						}
+						echo "<tr class='success'>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><b>Total Summary</b></td>
+							<td><b>". $totalbill ."</b></td>
+							<td><b>". $paid."</b></td>
+							<td><b>". $topay."</b></td>
+							</tr>";
+						
+					}?>
 				</tbody>
 			</table>
+
+					
 		</fieldset>
 	</div>
 </div>
@@ -72,7 +100,7 @@
 <script>
 $(document).ready(function() {
 	$("#customerName").autocomplete({
-				source: "<?php echo site_url('reports/creditreport/ajaxCustomer') ?>",
+				source: "<?php echo site_url($ajaxurl); ?>",
 				minLength: 0,
 				focus: function(event, ui) {
 					$("#customerName").val( ui.item.cname);
