@@ -121,6 +121,7 @@ class Stockreport extends CI_controller {
 			$data['fields']= array('id','name','barcode','quantity', 'stock', 'partyname','contact');
 			$data['link_col'] = 'id';
 			$data['link_url'] = 'product/edit/';
+			
 			//$data['summary'] = $this->radhe->getrowarray($summ);
 			$query = $this->db->query($sql);
 			$data['rows'] = $query->result_array();

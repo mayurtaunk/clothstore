@@ -55,8 +55,15 @@
 					<?php
 					
 						foreach ($rows as $value) {
+							if($value['debit'] != null)
+							{
+								echo "<tr class='error'>";
+							}
+							else
+							{
+								echo "<tr class='info'>";
+							}
 							
-							echo "<tr class='info'>";
 							foreach($fields as $col){
 								if(isset($link_col) && isset($link_url) && $link_col == $col)
 								echo "<td>".anchor_popup($link_url . $value[$col], $value[$col])."</td>";
@@ -67,31 +74,18 @@
 						}
 					?>
 					<tr></tr>
-					<?php if(isset($summary))
+					<?php	
+					if(isset($sumrows))
 					{
-						if(isset($summary['totalbill']))
-						{
-							$totalbill="Rupees " .number_format($summary['totalbill']). "/-";
-							$paid="Rupees " .number_format($summary['paid'])."/-";
-							$topay="Rupees " .number_format($summary['topay'])."/-";
-						}
-						else
-						{
-							$totalbill="Tota Bill";
-							$paid="Total Paid";
-							$topay="Total To Pay";
-						}
-						echo "<tr class='success'>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td><b>Total Summary</b></td>
-							<td><b>". $totalbill ."</b></td>
-							<td><b>". $paid."</b></td>
-							<td><b>". $topay."</b></td>
-							</tr>";
-						
-					}?>
+						echo "<tr class='warning'>";
+							foreach($sumrows as $col){
+								echo "<td><b>".$col."</b></td>";
+							}
+							echo "</tr>";
+					}				
+							
+					?>
+					
 				</tbody>
 			</table>
 

@@ -28,73 +28,143 @@ class Profitloss extends CI_controller {
 
 			if($this->session->userdata('key') == "1")
 			{
-				$sql = "SELECT DATE_FORMAT(S.datetime,'%d-%m-%Y') AS date ,'Sales A/C' as particular, 'Sales' as Vchtype, ' ' as Vch_No, ' ' as Debit, 
-						S.amount_recieved AS credit from sales S where S.amount_recieved != 0 
-						UNION
-						SELECT DATE_FORMAT(P.date,'%d-%m-%Y') AS date ,'PURCHASE A/C' as particular, 'Purchase' as Vchtype, P.bill_no as Vch_No, P.amount_paid as Debit,' ' AS credit from purchases P where P.amount_paid != 0  
-						UNION
-						SELECT DATE_FORMAT(T.date,'%d-%m-%Y') AS date ,T.particular as particular, 'Payment' as Vchtype, T.remarks as Vch_No, 
-                     	CASE 
-                     	WHEN type ='debit' THEN T.amount 
-                     	ELSE '' 
-                     	END AS debit,
-                     	CASE 
-                     	WHEN type ='credit' THEN T.amount 
-                     	ELSE '' 
-                     	END AS credit from transactions T  
-						
-						S.amount_recieved AS paid, (S.amount - S.amount_recieved) AS topay 
+				$sql ="SELECT UN.date , UN.particular, UN.vchtype, UN.vch_No, UN.debit, UN.credit  FROM (
+						SELECT DATE_FORMAT(S.datetime,'%d-%m-%Y') as  date, 'Sales A/C' AS particular, 'Sales' AS vchtype, 
+						' ' AS vch_No, ' ' AS debit,
+						S.amount_recieved AS credit
 						FROM sales S 
-						SELECT DATE_FORMAT(T.date,'%d-%m-%Y') AS date ,'PURCHASE A/C' as particular, 'Purchase' as Vchtype, P.bill_no as Vch_No, P.amount_paid as Debit, 
-						' ' AS credit from purchases P where P.amount_paid != 0  
-						WHERE S.amount != S.amount_recieved AND
-				        DATE_FORMAT(S.datetime, '%d-%m-%Y') >='" .$data['from_date']. "' AND
-						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "' AND
-						S.company_id=" .$this->session->userdata('company_id') .
-						" GROUP BY S.id";
-				$summ = "SELECT sum(S.amount) AS totalbill , 
-						sum(S.amount_recieved) AS paid, sum((S.amount - S.amount_recieved)) AS topay 
-						FROM sales S 
-						WHERE S.amount != S.amount_recieved AND
-				        DATE_FORMAT(S.datetime, '%d-%m-%Y') >='" .$data['from_date']. "' AND
-						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "' AND
-						S.company_id=" .$this->session->userdata('company_id') .
-						" GROUP BY S.id";	
+						INNER JOIN sale_details SD ON S.id = SD.sale_id
+						WHERE S.company_id=" . $this->session->userdata('company_id') . "
+						AND S.amount_recieved != 0 
+						AND SD.sale_id=S.id AND 
+						DATE_FORMAT(S.datetime, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						GROUP BY S.id
+						UNION
+						SELECT DATE_FORMAT(P.date,'%d-%m-%Y') AS date ,'PURCHASE A/C' AS particular, 'Purchase' AS vchtype, 
+						P.bill_no AS vch_No, P.amount_paid AS debit,' ' AS credit
+						FROM purchases P
+						WHERE P.amount_paid != 0  AND P.company_id=" . $this->session->userdata('company_id') . " AND
+						DATE_FORMAT(P.date, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(P.date, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						UNION
+						SELECT DATE_FORMAT(T.date,'%d-%m-%Y') AS date ,T.particular AS particular, 'Payment' AS vchtype,
+						T.remarks AS vch_No, 
+						CASE 
+						WHEN type ='debit' THEN T.amount 
+						ELSE '' 
+						END AS debit, 
+						CASE 
+						WHEN type ='credit' THEN T.amount 
+						ELSE '' 
+						END AS credit 
+						FROM transactions T  
+						WHERE T.company_id=" . $this->session->userdata('company_id') . " AND
+						DATE_FORMAT(T.date, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(T.date, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						) AS UN
+						ORDER BY UN.date"; 
+				
 			}
 			else
 			{
-				$sql = "SELECT S.id, S.party_name, S.party_contact, DATE_FORMAT(S.datetime,'%d-%m-%Y') AS date ,S.amount AS totalbill , 
-						S.amount_recieved AS paid, (S.amount - S.amount_recieved) AS topay 
-						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
+				$sql ="SELECT UN.date , UN.particular, UN.vchtype, UN.vch_No, UN.debit, UN.credit  FROM (
+						SELECT 
+						DATE_FORMAT(S.datetime,'%d-%m-%Y') as  date, 'Sales A/C' AS particular, 'Sales' AS vchtype, 
+						'' AS vch_No, '' AS debit,
+						CASE
+						WHEN SUM(SD.price) < S.amount_recieved THEN SD.price
+						ELSE S.amount_recieved
+						END AS credit
+						FROM sales S 
+						INNER JOIN sale_details SD ON S.id = SD.sale_id
 						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
-						INNER JOIN purchases PU ON PD.purchase_id = PU.id 
-						INNER JOIN products P ON P.id = PD.product_id 
-						WHERE S.amount != S.amount_recieved AND
-						DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
-						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
-						PU.recieved = 1 AND
-						P.company_id=". $this->session->userdata('company_id') .
-						" GROUP BY S.id";
-					$summ = "SELECT sum(S.amount) AS totalbill , 
-						sum(S.amount_recieved) AS paid, sum((S.amount - S.amount_recieved)) AS topay 
-						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
+						INNER JOIN purchases P ON PD.purchase_id = P.id
+						WHERE S.company_id=" . $this->session->userdata('company_id') . " 
+						AND S.amount_recieved != 0
+						AND P.recieved = 1
+						AND SD.sale_id = S.id AND 
+						DATE_FORMAT(S.datetime, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						GROUP BY S.id
+						UNION
+						SELECT DATE_FORMAT(P.date,'%d-%m-%Y') AS date ,'PURCHASE A/C' AS particular, 'Purchase' AS vchtype, 
+						P.bill_no AS vch_No, P.amount_paid AS debit,'' AS credit
+						FROM purchases P
+						WHERE P.amount_paid != 0  AND P.company_id=" . $this->session->userdata('company_id') . " AND
+						P.recieved = 1 AND
+						DATE_FORMAT(P.date, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(P.date, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						UNION
+						SELECT DATE_FORMAT(T.date,'%d-%m-%Y') AS date ,T.particular AS particular, 'Payment' AS vchtype,
+						T.remarks AS vch_No, 
+						CASE 
+						WHEN type ='debit' THEN T.amount 
+						ELSE '' 
+						END AS debit, 
+						CASE 
+						WHEN type ='credit' THEN T.amount 
+						ELSE '' 
+						END AS credit 
+						FROM transactions T  
+						WHERE T.company_id=" . $this->session->userdata('company_id') . " AND
+						T.type1 = 0 AND
+						DATE_FORMAT(T.date, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(T.date, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						) AS UN
+						ORDER BY UN.date";
+				$summ ="SELECT '' as blank1, '' as blank2, '' as blank3, '' as blank4, SUM(UN.debit) as debit, SUM(UN.credit) as credit  FROM (
+						SELECT 
+						DATE_FORMAT(S.datetime,'%d-%m-%Y') as  date, 'Sales A/C' AS particular, 'Sales' AS vchtype, 
+						' ' AS vch_No, ' ' AS debit,
+						CASE
+						WHEN SUM(SD.price) < S.amount_recieved THEN SD.price
+						ELSE S.amount_recieved
+						END AS credit
+						FROM sales S 
+						INNER JOIN sale_details SD ON S.id = SD.sale_id
 						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
-						INNER JOIN purchases PU ON PD.purchase_id = PU.id 
-						INNER JOIN products P ON P.id = PD.product_id 
-							WHERE S.amount != S.amount_recieved AND
-								DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
-								DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
-								PU.recieved = 1 AND
-								P.company_id=". $this->session->userdata('company_id') .
-								" GROUP BY S.id";
+						INNER JOIN purchases P ON PD.purchase_id = P.id
+						WHERE S.company_id=" . $this->session->userdata('company_id') . " 
+						AND S.amount_recieved != 0
+						AND P.recieved = 1
+						AND SD.sale_id = S.id AND 
+						DATE_FORMAT(S.datetime, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						GROUP BY S.id
+						UNION
+						SELECT DATE_FORMAT(P.date,'%d-%m-%Y') AS date ,'PURCHASE A/C' AS particular, 'Purchase' AS vchtype, 
+						P.bill_no AS vch_No, P.amount_paid AS debit,' ' AS credit
+						FROM purchases P
+						WHERE P.amount_paid != 0  AND P.company_id=" . $this->session->userdata('company_id') . " AND
+						P.recieved = 1 AND
+						DATE_FORMAT(P.date, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(P.date, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						UNION
+						SELECT DATE_FORMAT(T.date,'%d-%m-%Y') AS date ,T.particular AS particular, 'Payment' AS vchtype,
+						T.remarks AS vch_No, 
+						CASE 
+						WHEN type ='debit' THEN T.amount 
+						ELSE '' 
+						END AS debit, 
+						CASE 
+						WHEN type ='credit' THEN T.amount 
+						ELSE '' 
+						END AS credit 
+						FROM transactions T  
+						WHERE T.company_id=" . $this->session->userdata('company_id') . " AND
+						T.type1 = 0 AND
+						DATE_FORMAT(T.date, '%d-%m-%Y') >='" .$data['from_date']. "' AND
+						DATE_FORMAT(T.date, '%d-%m-%Y') <= '". $data['to_date'] . "'
+						) AS UN";
 						
 			}
 
-			$data['heading'] = array('Bill NO','Customer Name','CUstomer Contact','Date','Total Bill','Amount Paid','To Pay');
-			$data['fields']= array('id','party_name','party_contact', 'date', 'totalbill','paid' ,'topay');
-			$data['link_col'] = 'id';
-			$data['link_url'] = 'sales/edit/';
-			$data['summary'] = $this->radhe->getrowarray($summ);
+			$data['heading'] = array('Date','Particular','Voucher Type','Voucher Number','Debit','Credit');
+			$data['fields']= array('date','particular','vchtype', 'vch_No', 'debit','credit');
+			//$data['link_col'] = 'id';
+			//$data['link_url'] = 'sales/edit/';
+			$data['sumrows'] = $this->radhe->getrowarray($summ);
 			$query = $this->db->query($sql);
 			$data['rows'] = $query->result_array();
 
@@ -105,7 +175,9 @@ class Profitloss extends CI_controller {
 			$data['customer_name'] = '';
 			$data['from_date']	  = date('d-m-Y');
 			$data['to_date']	  = date('d-m-Y');
+			$data['sumrows'] = array();
 		}
+		
 		$data['headd'] = "Customer Credit Report";
 		$data['page'] = "reports/creditreport";
 		$data['page_title'] = "Credit Report";

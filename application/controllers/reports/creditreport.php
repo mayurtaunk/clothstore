@@ -137,7 +137,7 @@ class Creditreport extends CI_controller {
 			$data['fields']= array('id','party_name','party_contact', 'date', 'totalbill','paid' ,'topay');
 			$data['link_col'] = 'id';
 			$data['link_url'] = 'sales/edit/';
-			$data['summary'] = $this->radhe->getrowarray($summ);
+			$data['sumrows'] = $this->radhe->getrowarray($summ);
 			$query = $this->db->query($sql);
 			$data['rows'] = $query->result_array();
 

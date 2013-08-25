@@ -128,7 +128,7 @@ class Purchasecredit extends CI_controller {
 			$data['link_col'] = 'id';
 			$data['link_url'] = 'purchase/edit/';
 			$query = $this->db->query($sql);
-			$data['summary'] = $this->radhe->getrowarray($summ);
+			$data['sumrows'] = $this->radhe->getrowarray($summ);
 			$data['rows'] = $query->result_array();
 
 		}

@@ -217,7 +217,7 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src=<?php echo base_url('img/tags/repo.png'); ?> style="width : 70px; height : 70px;">Reports</a>
             <ul class="dropdown-menu">
-              <li <?php if($this->session->userdata('current_tab') == 'proloss_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/profitloss');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Profit Loss Report</a></li>
+              <li <?php if($this->session->userdata('current_tab') == 'proloss_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/profitloss');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">(Company) Profit Loss Report</a></li>
               <li <?php if($this->session->userdata('current_tab') == 'stock_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/stockreport');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Stock Report</a></li>
               <li <?php if($this->session->userdata('current_tab') == 'cst_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/creditreport');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Customer Credit</a></li>
               <li <?php if($this->session->userdata('current_tab') == 'pur_rep') { echo "class='active'"; } ?>> <a href=<?php echo site_url('reports/purchasecredit');?>><img src=<?php echo base_url('img/tags/salerpt.png'); ?> style="width : 50px; height : 50px;">Purchase Credit</a></li>
