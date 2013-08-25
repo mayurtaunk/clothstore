@@ -77,7 +77,7 @@ class Dashboard extends CI_Controller {
 			         PD.barcode, 
                      CASE 
                      WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
-                     ELSE (pd.quantity - sum(sd.quantity)) 
+                     ELSE (PD.quantity - sum(SD.quantity)) 
                      END AS stock,
 					 PA.name as partyname,
 					 PA.contact
@@ -87,7 +87,7 @@ class Dashboard extends CI_Controller {
 					 INNER JOIN parties PA ON PA.id=P.party_id
 					 LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
 					 WHERE P.recieved = 1 AND P.company_id=".$this->session->userdata('company_id'). 
-					 " GROUP BY PD.id ORDER BY stock LIMIT 0,10";			 	
+					 " GROUP BY PD.barcode ORDER BY stock LIMIT 0,10";			 	
 
 		}
 

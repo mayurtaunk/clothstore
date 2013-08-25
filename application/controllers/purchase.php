@@ -166,9 +166,20 @@ class Purchase extends CI_Controller {
 		{
 			
 			//$this->firephp->info($totalamount);exit;
-			$setrec = $this->input->post('recieved');
-			//$this->firephp->info($setrec == null);exit;
-			$data = array(
+			if($this->session->userdata('key') == "1")
+			{
+				$setrec = $this->input->post('recieved');
+				if($setrec == null)
+				{
+					$setrec = 0;
+				}	
+			}
+			else
+			{
+				$setrec = 1;
+			}
+			//$this->firephp->info($setrec);exit;
+			$updata = array(
 				'id' => $this->input->post('id'),
 				'company_id'=>$this->session->userdata('company_id'),
 				'party_id' => $this->input->post('party_id'),
@@ -176,20 +187,20 @@ class Purchase extends CI_Controller {
 				'bill_no' => $this->input->post('bill_no'),
 				'amount' => $this->input->post('amount'),
 				'amount_paid' => $this->input->post('amountpaid'),
-				'recieved'=>($setrec == null) ? 1 : $setrec,
+				'recieved'=>$setrec,
 				/*'id2'=> ($this->input->post('id')==0 && $this->input->post('recieved')==1) ? $this->radhe->getid('purchases','id2') : 0*/
 			);
 			//$this->firephp->info($data['id']);exit;
 			if ($data['id'] == 0) 
 			{
-				$this->db->insert('purchases', $data);
+				$this->db->insert('purchases', $updata);
 				$query = $this->db->query('SELECT LAST_INSERT_ID()');
 				$new_id = $query->row_array();
 				$id = $new_id['LAST_INSERT_ID()'];
 			}
 			else 
 			{
-				$this->db->update('purchases', $data, "id = '" . $data['id'] . "'");
+				$this->db->update('purchases', $updata, "id = '" . $data['id'] . "'");
 				$id = $data['id'];
 			}
 

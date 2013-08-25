@@ -7,25 +7,33 @@
 ?>
 <fieldset>		
 	<div class="row-fluid">
+		<?php if($showtitle == 1) {?>
 		<div class="span4">
+			
 			<div class="data-block">
-				<h6 class="data-heading">Customer Name</h6>
-					<input type="hidden" id ="customerID"  name="customer_id" value="<?php echo $customer_id; ?>" />
-					<input type="text" class="span12" id="customerName" name="customerName" value="<?php echo $customer_name; ?>" />
+				<h6 class="data-heading"><?php echo $txttitle;?></h6>
+					<input type="hidden" id ="customerID"  name="customer_id" value="<?php echo $customer_id ?>" />
+					<input type="text" class="Text" id="customerName" name="customerName" value="<?php echo $customer_name; ?>" />
 			</div>
+
 		</div>
+		<?php }?>
+		<?php if ($showdate == 1) {?>
 		<div class="span4">
 			<div class="data-block">
 				<h6 class="data-heading">From</h6>
-					<input type="text" id="datepicker" name="from_date" value="<?php echo $from_date; ?>" />
+				<div class="control-group">
+					<input type="text" class="DateTime" name="from_date" value="<?php echo $from_date ?>" />
+				</div>
 			</div>
 		</div>
 		<div class="span4">
 			<div class="data-block">
 				<h6 class="data-heading">To</h6>
-					<input type="text" id="datepicker1" name="to_date" value="<?php echo $to_date; ?>" />
+					<input type="text" class="DateTime" name="to_date" value="<?php echo $to_date ?>" />
 			</div>
 		</div>
+		<?php } ?>
 	</div>
 </fieldset>
 <div class="row-fluid">
@@ -34,11 +42,10 @@
 		<legend>Bill Items</legend>
 			<table class="table table-condensed ">
 				<thead>	
-				</tr>
+				<tr>
 						<?php if(isset($heading)) {
 							foreach ($heading as $h) {
-								echo '<th>
-									  '.$h.'</th>';
+								echo '<th>'.$h.'</th>';
 							}
 						}
 				?>
@@ -52,7 +59,7 @@
 							echo "<tr class='info'>";
 							foreach($fields as $col){
 								if(isset($link_col) && isset($link_url) && $link_col == $col)
-								echo "<td>".anchor($link_url . $value[$col], $value[$col])."</td>";
+								echo "<td>".anchor_popup($link_url . $value[$col], $value[$col])."</td>";
 								else
 								echo "<td>".$value[$col]."</td>";
 							}

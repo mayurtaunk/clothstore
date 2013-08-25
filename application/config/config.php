@@ -25,7 +25,7 @@ if (DEBUG_CI) {
 if (strcmp(PHP_OS, 'Linux') == 0) {
 	define ('LINUX',   true);
 	$config['base_url']	    = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? 'https://' : 'http://';
-	$config['base_url']	   .= (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'].'/~nimesh/clothstore/' : '');
+	$config['base_url']	   .= (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'].'/' : '');
 	
 }
 elseif (strcmp(PHP_OS, 'WIN32') == 0 OR

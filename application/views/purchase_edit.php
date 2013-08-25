@@ -42,7 +42,7 @@
 		<div class="control-group">
 		  <div class="controls">
 		    <label class="checkbox">
-		      <input type="checkbox" name="recieved" <?php echo $row['recieved'] == 1 ? "checked=checked"  : "" ?> value="recieved">
+		      <input type="checkbox" name="recieved" <?php echo $row['recieved'] == 1 ? "checked=checked"  : "" ?> value="1">
 		      Recieved
 		    </label>
 		  </div>

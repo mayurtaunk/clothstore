@@ -154,7 +154,10 @@ class Transaction extends CI_Controller {
 		$this->form_validation->set_rules('particular', 'Particular', 'trim|required');
 		$this->form_validation->set_rules('amount', 'Amount', 'trim|required|regex_match[/^[0-9(),-]+$/]|xss_clean');
 		$this->form_validation->set_rules('remarks', 'Remarks', 'trim|required');
-		$this->form_validation->set_rules('type', 'Type', 'required');
+		if($id == 0)
+		{
+			//$this->form_validation->set_rules('type', 'Type', 'required');
+		}
 		$data['id'] = $id; 
 		$row = array(
 					'account_id' => '',
@@ -168,42 +171,49 @@ class Transaction extends CI_Controller {
 		$data['page'] = "Transaction";
 		if($data['id'] == 0)
 		{
+				$tp = $this->input->post('type');
 				$data['itemval']='';
 				$data['preadonly']= 'false';
 				$data['showtype']='true';
 		}
 		if($data['id'] == 'lightbill') 
 		{
+				$tp = "debit";
 				$data['itemval']='Light Bill';
 				$data['preadonly'] = 'true';
 				$data['showtype']='false';
 		}
 		if($data['id'] == 'telephonebill') 
 		{
+				$tp = "debit";
 				$data['itemval']='Telephone Bill';
 				$data['preadonly'] = 'true';
 				$data['showtype']='false';
 		}
 		if($data['id'] == 'employeesalary') 
-		{
+		{		
+				$tp = "debit";
 				$data['itemval']='Employee Salary';
 				$data['preadonly'] = 'true';
 				$data['showtype']='false';
 		}
 		if($data['id'] == 'taxes') 
 		{
+				$tp = "debit";
 				$data['itemval']='Tax';
 				$data['preadonly'] = 'true';
 				$data['showtype']='false';
 		}
 		if($data['id'] == 'other') 
 		{
+				$tp = "debit";
 				$data['itemval']='MISC';
 				$data['preadonly'] = 'true';
 				$data['showtype']='false';
 		}
 		if($data['id'] == 'inbound') 
 		{
+				$tp = "credit";
 				$data['itemval']='INBOUND';
 				$data['preadonly'] = 'true';
 				$data['showtype']='false';
@@ -215,7 +225,7 @@ class Transaction extends CI_Controller {
 			$data['page'] = 'transaction_edit';	
 			$row = array(
 				'account_id' => $this->input->post('account_id'),
-				'type' => $this->input->post('type'),
+				'type' => $tp,
 				'particular' => $this->input->post('particular'),
 				'amount' => $this->input->post('amount'),
 				'remarks' => $this->input->post('remarks')
@@ -229,7 +239,7 @@ class Transaction extends CI_Controller {
 			if ($data['id'] == "0") 
 			{			
 
-				$this->radhe->set_trans($this->input->post('accountid'),$this->input->post('type'),$this->input->post('particular'),$this->input->post('amount'),$this->input->post('remarks'));
+				$this->radhe->set_trans($this->input->post('accountid'),$tp,$this->input->post('particular'),$this->input->post('amount'),$this->input->post('remarks'));
 			}
 			elseif ($data['id'] == "inbound")  
 			{

@@ -9,20 +9,23 @@ class Creditreport extends CI_controller {
 						'current_tab' => 'cust_rep'
 					);
 		$this->session->set_userdata($sudata);
-		$canlog=$this->radhe->canlogin();
-		if ($canlog!=1) 
+		$canlog      = $this->radhe->canlogin();
+		if ($canlog != 1) 
 		{
 			redirect('main/login');
 		}
 		$data['rows']=array();
+		$data['showtitle'] = 1;
+		$data['txttitle']="Customer Name";
 		$data['ajaxurl']="reports/creditreport/ajaxCustomer";
+		$data['showdate'] = 1;
 		if($this->input->post('submit')) 
 		{
 			//
 			$data['customer_id']   = $this->input->post('customer_id');
 			$data['customer_name'] = $this->input->post('customerName');
-			$data['from_date'] 	  = $this->input->post('from_date');
-			$data['to_date']	  = $this->input->post('to_date');
+			$data['from_date']     = $this->input->post('from_date');
+			$data['to_date']       = $this->input->post('to_date');
 
 
 			if($data['customer_name'] != "")
@@ -182,8 +185,8 @@ class Creditreport extends CI_controller {
 				$search = strtolower($this->input->get('term'));
 				$sql= "SELECT S.party_name AS cname, S.id
 				FROM sales S  
-				WHERE S.party_name LIKE '%$search%' AND S.party_name IS NOT NULL AND S.company_id = 1
-				GROUP BY S.party_name";	
+				WHERE S.party_name LIKE '%$search%' AND S.party_name IS NOT NULL AND S.company_id = ".$this->session->userdata['company_id'].
+				" GROUP BY S.party_name";	
 				$this->_getautocomplete($sql);
 			
 	}

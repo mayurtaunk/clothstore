@@ -59,6 +59,7 @@ class Sales extends CI_Controller {
 		$data['list'] = array(
 			'heading' => array('ID', 'DateTime', 'Customer Name' ,'Discount', 'Amount')
 		);
+		$data['focusid']="barcode";
 		$data['rows']="";
 		$data['help']="Please enter Party name OR Bill Date(yyyy-mm-dd)";
 		$data['hhelp'] ="| Ex. Shukla | Ex. 2013-08-11";
@@ -170,12 +171,12 @@ class Sales extends CI_Controller {
 				}
 				else
 				{
-					$data['sale_details']= $this->radhe->getresultarray("SELECT pr.name,pr.id,pd.barcode,pd.mrp,sd.id,sd.sale_id,sd.price,sd.quantity,sd.purchase_detail_id
-										   FROM sale_details sd 
-										   INNER JOIN purchase_details pd ON sd.purchase_detail_id = pd.id 
-		 								   INNER JOIN products pr ON pd.product_id=pr.id 
-										   INNER JOIN purchases P ON PD.purchase_id=P.id
-										   where P.recieved = 1 AND sd.sale_id=".$id. " AND pr.company_id=". $this->session->userdata('company_id'));	
+					$data['sale_details']= $this->radhe->getresultarray("SELECT PR.name, PR.id, PD.barcode, PD.mrp, SD.id, SD.sale_id, SD.price, SD.quantity, SD.purchase_detail_id
+										   FROM sale_details SD 
+										   INNER JOIN purchase_details PD ON SD.purchase_detail_id = PD.id 
+		 								   INNER JOIN products PR ON PD.product_id = PR.id 
+										   INNER JOIN purchases P ON PD.purchase_id = P.id
+										   where P.recieved = 1 AND SD.sale_id = ".$id. " AND PR.company_id=". $this->session->userdata('company_id'));	
 		}
 				
 				foreach ($data['sale_details'] as $key => $value) 
@@ -318,12 +319,12 @@ class Sales extends CI_Controller {
 							$ststaus=$this->radhe->getstockstatus($purids,$id);
 							if($ststaus !=0 )
 							{
-								$sameprods=$this->radhe->getresultarray('select id from purchase_details where barcode="'. $barcodes[$sdid].'" and sold<>1');
+								$sameprods=$this->radhe->getresultarray('SELECT id FROM purchase_details WHERE barcode = "'. $barcodes[$sdid].'" AND sold<>1');
 								foreach ($sameprods as $key => $value) 
 								{
 									if($tosell != 0)
 									{
-										$thisprod=$this->radhe->getrowarray('select mrp from purchase_details where id='.$value['id']);
+										$thisprod=$this->radhe->getrowarray('SELECT mrp FROM purchase_details WHERE id='.$value['id']);
 										$currstockstat=$this->radhe->getstockstatus($value['id'],$id);
 										if($currstockstat==0)
 										{
@@ -392,11 +393,11 @@ class Sales extends CI_Controller {
 			if($this->input->post('purchase_autocomplete_id') != null && $flag==0)
 			{
 				$new_id=$this->radhe->getrowarray('select barcode from purchase_details where id='. $this->input->post('purchase_autocomplete_id'));
-				$purids=$this->radhe->getcommasepresultarray($this->radhe->getresultarray('select id from purchase_details where barcode="'. $new_id['barcode'].'" and sold <>1'),'id');
+				$purids=$this->radhe->getcommasepresultarray($this->radhe->getresultarray('SELECT id FROM purchase_details WHERE barcode = "'. $new_id['barcode'].'" AND sold <>1'),'id');
 				$ststaus=$this->radhe->getstockstatus($purids,$id);
 				if($ststaus != 0)
 				{	
-					$sameprods=$this->radhe->getresultarray('select id from purchase_details where barcode="'. $new_id['barcode'].'" and sold<>1');
+					$sameprods=$this->radhe->getresultarray('SELECT id FROM purchase_details WHERE barcode = "'. $new_id['barcode'].'" AND sold<>1');
 					foreach ($sameprods as $key => $value) 
 					{
 						if($tosell <> 0)
@@ -468,7 +469,7 @@ class Sales extends CI_Controller {
 		$this->load->library('radhe');
 		$data['company_details'] = $this->radhe->getrowarray('select * from companies where id='. $this->session->userdata('company_id'));
 		$data['sale'] = $this->radhe->getrowarray('select * from sales where id='.$id);
-		$data['sale_details'] = $this->radhe->getresultarray('select P.name,PD.product_id,PD.mrp,SD.quantity,SD.price from sale_details SD INNER JOIN purchase_details PD ON PD.id=SD.purchase_detail_id INNER JOIN products P ON P.id=PD.product_id where sale_id='.$id);
+		$data['sale_details'] = $this->radhe->getresultarray('SELECT P.name, PD.product_id, PD.mrp, SD.quantity, SD.price FROM sale_details SD INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id INNER JOIN products P ON P.id = PD.product_id WHERE SD.sale_id = '.$id);
 		$data['total_qty']=$this->radhe->getrowarray('select sum(quantity) as qty from sale_details where sale_id='.$id);
 		$data['total_pay']=$this->radhe->getrowarray('select sum(price) as pay from sale_details where sale_id='.$id);
 		//$this->firephp->info($data['sale']);
@@ -529,7 +530,7 @@ class Sales extends CI_Controller {
 			}
 			
 	}
-	function ajaxProdcutseach() 
+	function ajaxProdcutSearch() 
 	{
 
 		if($this->session->userdata('key') == 0)

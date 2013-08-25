@@ -15,7 +15,10 @@ class Purchasecredit extends CI_controller {
 			redirect('main/login');
 		}
 		$data['rows']=array();
+		$data['showtitle'] = 1;
+		$data['txttitle']="Party Name";
 		$data['ajaxurl']="reports/Purchasecredit/ajaxParty";
+		$data['showdate'] = 1;
 		if($this->input->post('submit')) 
 		{
 			//
@@ -172,8 +175,8 @@ class Purchasecredit extends CI_controller {
 				$search = strtolower($this->input->get('term'));
 				$sql= "SELECT P.name AS cname, P.id
 				FROM parties P  
-				WHERE P.name LIKE '%$search%' AND P.name IS NOT NULL AND P.company_id = 1
-				GROUP BY P.name";	
+				WHERE P.name LIKE '%$search%' AND P.name IS NOT NULL AND P.company_id = ".$this->session->userdata['company_id'].
+				" GROUP BY P.name";	
 				$this->_getautocomplete($sql);
 			
 	}
