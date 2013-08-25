@@ -9,8 +9,8 @@ class Creditreport extends CI_controller {
 						'current_tab' => 'cust_rep'
 					);
 		$this->session->set_userdata($sudata);
-		$canlog=$this->radhe->canlogin();
-		if ($canlog!=1) 
+		$canlog      = $this->radhe->canlogin();
+		if ($canlog != 1) 
 		{
 			redirect('main/login');
 		}
@@ -21,8 +21,8 @@ class Creditreport extends CI_controller {
 			//
 			$data['customer_id']   = $this->input->post('customer_id');
 			$data['customer_name'] = $this->input->post('customerName');
-			$data['from_date'] 	  = $this->input->post('from_date');
-			$data['to_date']	  = $this->input->post('to_date');
+			$data['from_date']     = $this->input->post('from_date');
+			$data['to_date']       = $this->input->post('to_date');
 
 
 			if($data['customer_name'] != "")

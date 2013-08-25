@@ -10,20 +10,22 @@
 		<div class="span4">
 			<div class="data-block">
 				<h6 class="data-heading">Customer Name</h6>
-					<input type="hidden" id ="customerID"  name="customer_id" value="<?php echo $customer_id; ?>" />
-					<input type="text" class="span12" id="customerName" name="customerName" value="<?php echo $customer_name; ?>" />
+					<input type="hidden" id ="customerID"  name="customer_id" value="<?php echo $customer_id ?>" />
+					<input type="text" class="Text" id="customerName" name="customerName" value="<?php echo $customer_name; ?>" />
 			</div>
 		</div>
 		<div class="span4">
 			<div class="data-block">
 				<h6 class="data-heading">From</h6>
-					<input type="text" id="datepicker" name="from_date" value="<?php echo $from_date; ?>" />
+				<div class="control-group">
+					<input type="text" class="DateTime" name="from_date" value="<?php echo $from_date ?>" />
+				</div>
 			</div>
 		</div>
 		<div class="span4">
 			<div class="data-block">
 				<h6 class="data-heading">To</h6>
-					<input type="text" id="datepicker1" name="to_date" value="<?php echo $to_date; ?>" />
+					<input type="text" class="DateTime" name="to_date" value="<?php echo $to_date ?>" />
 			</div>
 		</div>
 	</div>

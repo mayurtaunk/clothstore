@@ -160,7 +160,7 @@ $(document).ready(function() {
 });
 $(document).ready(function() {
 	$("#productsearch").autocomplete({
-				source: "<?php echo site_url('sales/ajaxProdcutseach') ?>",
+				source: "<?php echo site_url('sales/ajaxProdcutSearch') ?>",
 				minLength: 0,
 				focus: function(event, ui) {
 					$("#productsearch").val(ui.item.name);
