@@ -134,6 +134,10 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
     numberOfMonths : 3,
     showAnim : "slideDown"
   });
+
+  <?php if(isset($focus_id)) :
+    echo '$("#'.$focus_id.'").focus()';
+   endif; ?>
 });
 </script>
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
