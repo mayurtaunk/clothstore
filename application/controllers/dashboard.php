@@ -77,7 +77,7 @@ class Dashboard extends CI_Controller {
 			         PD.barcode, 
                      CASE 
                      WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
-                     ELSE (pd.quantity - sum(sd.quantity)) 
+                     ELSE (PD.quantity - sum(SD.quantity)) 
                      END AS stock,
 					 PA.name as partyname,
 					 PA.contact
