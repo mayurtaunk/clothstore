@@ -136,15 +136,6 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
   });
 });
 </script>
-<?php if(isset($focusid)) 
-{
-echo "<script>
-     $(function() {
-      $('#<?php echo $focusid;?>').focus();
-    });
-    </script>";
-}
-?>
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 </head>
 <body>
