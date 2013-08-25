@@ -36,11 +36,10 @@
 		<legend>Bill Items</legend>
 			<table class="table table-condensed ">
 				<thead>	
-				</tr>
+				<tr>
 						<?php if(isset($heading)) {
 							foreach ($heading as $h) {
-								echo '<th>
-									  '.$h.'</th>';
+								echo '<th>'.$h.'</th>';
 							}
 						}
 				?>
@@ -54,7 +53,7 @@
 							echo "<tr class='info'>";
 							foreach($fields as $col){
 								if(isset($link_col) && isset($link_url) && $link_col == $col)
-								echo "<td>".anchor($link_url . $value[$col], $value[$col])."</td>";
+								echo "<td>".anchor_popup($link_url . $value[$col], $value[$col])."</td>";
 								else
 								echo "<td>".$value[$col]."</td>";
 							}

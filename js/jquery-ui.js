@@ -14985,5 +14985,3 @@ $.widget( "ui.tooltip", {
 });
 
 }( jQuery ) );
-
-[feedly mini] 
