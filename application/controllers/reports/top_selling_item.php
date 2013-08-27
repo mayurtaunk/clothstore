@@ -1,13 +1,14 @@
 <?php 
 
-class Sale_report extends CI_controller {
+class Top_selling_item extends CI_controller 
+	{
 	function __construct() {
 		parent::__construct();
 	}
 
 	function index() {
 		$sudata =array (
-						'current_tab' => 'sale_rep'
+						'current_tab' => 'topsale_rep'
 					);
 			$this->session->set_userdata($sudata);
 		$canlog=$this->radhe->canlogin();
@@ -15,7 +16,7 @@ class Sale_report extends CI_controller {
 			redirect('main/login');
 		}
 		$data['rows']=array();
-		$data['showtitle'] = 1;
+		$data['showtitle'] = 0;
 		$data['txttitle']="Product";
 		$data['ajaxurl']="reports/sale_report/ajaxProduct";
 		$data['showdate'] = 1;
@@ -32,7 +33,7 @@ class Sale_report extends CI_controller {
 			{
 				if($this->session->userdata('key') == "1")
 				{
-					$sql = "SELECT DATE_FORMAT(S.datetime,'%d-%m-%Y') AS date, P.name AS product , SUM(SD.quantity) as squantity
+					$sql = "SELECT  P.name AS product , SUM(SD.quantity) as squantity
 						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
 						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
 						INNER JOIN products P ON P.id = PD.product_id 
@@ -41,12 +42,12 @@ class Sale_report extends CI_controller {
 						DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
 						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
 						P.company_id=". $this->session->userdata('company_id') .
-						" GROUP BY P.name, SD.purchase_detail_id ORDER BY S.datetime";
+						" GROUP BY  SD.purchase_detail_id ORDER BY squantity DESC";
 			
 				}
 				else
 				{
-					$sql = "SELECT DATE_FORMAT(S.datetime,'%d-%m-%Y') AS date, P.name AS product , SUM(SD.quantity) as squantity 
+					$sql = "SELECT  P.name AS product , SUM(SD.quantity) as squantity 
 						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
 						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
 						INNER JOIN purchases PU ON PD.purchase_id = PU.id 
@@ -57,7 +58,7 @@ class Sale_report extends CI_controller {
 						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
 						PU.recieved = 1 AND
 						P.company_id=". $this->session->userdata('company_id') .
-						" GROUP BY P.name, SD.purchase_detail_id ORDER BY S.datetime";
+						" GROUP BY  SD.purchase_detail_id ORDER BY squantity DESC";
 					
 				}
 				
@@ -67,18 +68,18 @@ class Sale_report extends CI_controller {
 				if($this->session->userdata('key') == "1")
 				{
 
-					$sql = "SELECT DATE_FORMAT(S.datetime,'%d-%m-%Y') AS date, P.name AS product, SUM(SD.quantity) as squantity
+					$sql = "SELECT  P.name AS product, SUM(SD.quantity) as squantity
 						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
 						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
 						INNER JOIN purchases PR ON PR.id = PD.purchase_id
 						INNER JOIN products P ON P.id = PD.product_id 
 						WHERE DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
 						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
-						P.company_id=". $this->session->userdata('company_id'). " GROUP BY P.name, SD.purchase_detail_id ORDER BY S.datetime";
+						P.company_id=". $this->session->userdata('company_id'). " GROUP BY P.name ORDER BY squantity DESC";
 				}
 				else
 				{
-					$sql = "SELECT DATE_FORMAT(S.datetime,'%d-%m-%Y') AS date, P.name AS product, SUM(SD.quantity) as squantity
+					$sql = "SELECT  P.name AS product, SUM(SD.quantity) as squantity
 						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
 						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
 						INNER JOIN purchases PR ON PR.id = PD.purchase_id
@@ -87,12 +88,12 @@ class Sale_report extends CI_controller {
 						WHERE DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
 						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
 						PU.recieved = 1 AND
-						P.company_id=". $this->session->userdata('company_id'). " GROUP BY P.name, SD.purchase_detail_id ORDER BY S.datetime";
+						P.company_id=". $this->session->userdata('company_id'). " GROUP BY P.name ORDER BY squantity DESC";
 				}
 
 			}
-			$data['heading'] = array('Date','Product Name','Sold');
-			$data['fields']= array('date','product','squantity');
+			$data['heading'] = array('Product Name','Sold');
+			$data['fields']= array('product','squantity');
 			//$data['link_col'] = 'id';
 			//$data['link_url'] = 'purchase/edit/';
 			//$query = $this->db->query($sql);

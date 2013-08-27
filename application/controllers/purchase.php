@@ -157,8 +157,15 @@ class Purchase extends CI_Controller {
 		$data['page'] = "purchase_edit";
 		
 		if ($this->form_validation->run() == false) {
-
-			$data['focus_id'] = 'Name';
+			if($id == 0)
+			{
+				$data['focus_id'] = 'party_name';
+			}
+			else
+			{
+				$data['focus_id'] = 'ajaxName';
+			}
+			
 			$data['title'] = 'Purchase Edit';
 			$this->load->view('index', $data);
 		}
@@ -202,6 +209,7 @@ class Purchase extends CI_Controller {
 			{
 				$this->db->update('purchases', $updata, "id = '" . $data['id'] . "'");
 				$id = $data['id'];
+				
 			}
 
 

@@ -6,7 +6,7 @@ class Creditreport extends CI_controller {
 	}
 	function index() {
 		$sudata =array (
-						'current_tab' => 'cust_rep'
+						'current_tab' => 'cst_rep'
 					);
 		$this->session->set_userdata($sudata);
 		$canlog      = $this->radhe->canlogin();
@@ -40,14 +40,13 @@ class Creditreport extends CI_controller {
 							DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "' AND
 							S.company_id=" .$this->session->userdata('company_id') .
 							" GROUP BY S.id";
-					$summ = "SELECT sum(S.amount) AS totalbill , 
+					$summ = "SELECT '' as blank, '' as blank1,'' as blank2, '' as blank3, sum(S.amount) AS totalbill , 
 							sum(S.amount_recieved) AS paid, sum((S.amount - S.amount_recieved)) AS topay
 							FROM sales S 
 							WHERE S.amount != S.amount_recieved AND s.party_name ='".$data['customer_name']."' AND
 					        DATE_FORMAT(S.datetime, '%d-%m-%Y') >='" .$data['from_date']. "' AND
 							DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "' AND
-							S.company_id=" .$this->session->userdata('company_id') .
-							" GROUP BY S.id";
+							S.company_id=" .$this->session->userdata('company_id');
 			
 				}
 				else
@@ -64,7 +63,7 @@ class Creditreport extends CI_controller {
 							PU.recieved = 1 AND
 							P.company_id=". $this->session->userdata('company_id') .
 							" GROUP BY S.id";
-					$summ = "SELECT sum(S.amount) AS totalbill , 
+					$summ = "SELECT '' as blank, '' as blank1,'' as blank2, '' as blank3, sum(S.amount) AS totalbill , 
 							sum(S.amount_recieved) AS paid, sum((S.amount - S.amount_recieved)) AS topay 
 							FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
 							INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
@@ -74,8 +73,7 @@ class Creditreport extends CI_controller {
 							DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
 							DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
 							PU.recieved = 1 AND
-							P.company_id=". $this->session->userdata('company_id') .
-							" GROUP BY S.id";
+							P.company_id=". $this->session->userdata('company_id');
 					
 				 }
 				
@@ -92,14 +90,13 @@ class Creditreport extends CI_controller {
 							DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "' AND
 							S.company_id=" .$this->session->userdata('company_id') .
 							" GROUP BY S.id";
-					$summ = "SELECT sum(S.amount) AS totalbill , 
+					$summ = "SELECT '' as blank, '' as blank1,'' as blank2, '' as blank3, sum(S.amount) AS totalbill , 
 							sum(S.amount_recieved) AS paid, sum((S.amount - S.amount_recieved)) AS topay 
 							FROM sales S 
 							WHERE S.amount != S.amount_recieved AND
 					        DATE_FORMAT(S.datetime, '%d-%m-%Y') >='" .$data['from_date']. "' AND
 							DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '". $data['to_date'] . "' AND
-							S.company_id=" .$this->session->userdata('company_id') .
-							" GROUP BY S.id";
+							S.company_id=" .$this->session->userdata('company_id');
 			
 				}
 				else
@@ -116,7 +113,7 @@ class Creditreport extends CI_controller {
 							PU.recieved = 1 AND
 							P.company_id=". $this->session->userdata('company_id') .
 							" GROUP BY S.id";
-					$summ = "SELECT sum(S.amount) AS totalbill , 
+					$summ = "SELECT '' as blank, '' as blank1,'' as blank2, '' as blank3, sum(S.amount) AS totalbill , 
 							sum(S.amount_recieved) AS paid, sum((S.amount - S.amount_recieved)) AS topay 
 							FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
 							INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
@@ -126,13 +123,13 @@ class Creditreport extends CI_controller {
 							DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
 							DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
 							PU.recieved = 1 AND
-							P.company_id=". $this->session->userdata('company_id') .
-							" GROUP BY S.id";
+							P.company_id=". $this->session->userdata('company_id');
+					
 					
 				 }
 
 			}
-
+			
 			$data['heading'] = array('Bill NO','Customer Name','CUstomer Contact','Date','Total Bill','Amount Paid','To Pay');
 			$data['fields']= array('id','party_name','party_contact', 'date', 'totalbill','paid' ,'topay');
 			$data['link_col'] = 'id';

@@ -39,21 +39,16 @@ class Transaction extends CI_Controller {
 		/*Pagination Configuration*/
 
 		$data['list'] = array(
-			'heading' => array('Account Number', 'Date', 'Amount','Type'),
+			'heading' => array('Date', 'Amount','Type'),
 			'link_url'=> "transaction/edit/");
-		// $this->db->select('account_id,DATE_FORMAT(date,"%W, %M %e, %Y")as date,CONCAT("INR ", FORMAT(amount, 2)) AS amount,type',false);
-		// $this->db->order_by("date", "desc");
-		// $query = $this->db->get('transactions', $config['per_page'],$this->uri->segment(3));
-
-		$query = $this->db->query("SELECT A.account_no , DATE_FORMAT(T.date,'%W, %M %e, %Y')as date, T.amount, T.type FROM transactions T 
-								   INNER JOIN accounts A ON T.account_id = A.id 
+		$query = $this->db->query("SELECT DATE_FORMAT(T.date,'%W, %M %e, %Y')as date, T.amount, T.type FROM transactions T 
 								   ORDER BY date DESC
 								   LIMIT ".$config['per_page']);
 		$data['rows']=$query->result_array();
 		$data['page'] = "list";
 		$data['title'] = "Transaction List";
 		$data['link'] = "transaction/edit/";
-		$data['fields']= array('account_no','date','amount','type');
+		$data['fields']= array('date','amount','type');
 		$data['link_url'] = 'transaction/edit/';
 		$data['button_text']='Add New Transaction';
 		$this->load->view('index',$data);
@@ -280,15 +275,5 @@ class Transaction extends CI_Controller {
 		}
 		echo '[' . join(',', $data) . ']';
 	}
-	function ajaxaccountnumber() 
-	{
-		
-			$search = strtolower($this->input->get('term'));	
-			$sql = "SELECT id, account_no
-			FROM accounts 
-			WHERE account_no LIKE '%$search%' and company_id=".$this->session->userdata('company_id'). 
-			" ORDER BY account_no";
-			$this->_getautocomplete($sql);
-		
-	}
+
 }

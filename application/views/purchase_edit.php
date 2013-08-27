@@ -113,7 +113,7 @@
 <script>
 
   $(document).ready(function() {
-      $("#party_name").focus();
+     
       $('.control-group input').keypress(function(e){
       $(e.target).parent().parent().removeClass("error");
       });

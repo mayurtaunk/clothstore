@@ -23,7 +23,6 @@ class Radhe {
                 $format = 'DATE_ATOM';
                 $time = time();
                 $data = array(
-                    'account_id' =>$account_id,
                     'date'=> standard_date($format, $time),
                     'type' => $type,
                     'particular' => $particular,
@@ -34,21 +33,7 @@ class Radhe {
                 );
                 
                 $CI->db->insert('transactions', $data);
-                $bal=$this->getrowarray('select balance from accounts where account_no='.$account_id);
-                if($type == 'credit')
-                {
-                    $sum=$bal['balance']+$amount;
-                    $udata= array(
-                    'balance'=> $sum);
-                    $CI->db->update('accounts', $udata, "account_no = '" . $account_id . "'");
-                }
-                elseif($type =='debit')
-                {
-                    $sum=$bal['balance']-$amount;
-                    $udata= array(
-                    'balance'=> $sum);
-                    $CI->db->update('accounts', $udata, "account_no = '" . $account_id . "'");
-                }
+                
                 
     }
     public function canlogin()

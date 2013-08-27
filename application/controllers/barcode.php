@@ -7,6 +7,7 @@ class Barcode extends CI_Controller {
 						'current_tab' => 'barcode'
 					);
 		$this->session->set_userdata($sudata);
+		$data['focus_id'] = 'Barcode';
 		$data['page'] = "barcode_print";
 		$data['title'] = "Barcode";
 		$this->load->view('index',$data);

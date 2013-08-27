@@ -52,18 +52,42 @@
 				</tr>
 				</thead>
 				<tbody>
-					<?php
-					
-						foreach ($rows as $value) {
-							if($value['debit'] != null)
+
+					<?php	
+							if(isset($oparray))
 							{
-								echo "<tr class='error'>";
+								echo "<tr class='info'>";
+								foreach($oparray as $col)
+								{
+									if(is_numeric($col))
+									{
+										echo "<td><b>".number_format($col)."</b></td>";	
+									}
+									else
+									{
+										echo "<td><b>".$col."</b></td>";
+									}
+									
+								}
+								echo "</tr>";
+							}				
+								
+						foreach ($rows as $value) {
+							if(isset($value['debit']))
+							{
+								if($value['debit'] != null)
+								{
+									echo "<tr class='error'>";
+								}
+								else
+								{
+									echo "<tr class='info'>";
+								}
 							}
 							else
 							{
 								echo "<tr class='info'>";
 							}
-							
 							foreach($fields as $col){
 								if(isset($link_col) && isset($link_url) && $link_col == $col)
 								echo "<td>".anchor_popup($link_url . $value[$col], $value[$col])."</td>";
@@ -75,15 +99,60 @@
 					?>
 					<tr></tr>
 					<?php	
+							echo "<tr></tr>";
 					if(isset($sumrows))
 					{
 						echo "<tr class='warning'>";
 							foreach($sumrows as $col){
-								echo "<td><b>".$col."</b></td>";
+								if(is_numeric($col))
+								{
+									echo "<td><b>".number_format($col)."</b></td>";	
+								}
+								else
+								{
+									echo "<td><b>".$col."</b></td>";
+								}
+								
 							}
 							echo "</tr>";
 					}				
-							
+							echo "<tr></tr>";
+					
+					if(isset($closingbalance))
+							{
+								echo "<tr class='info'>";
+								foreach($closingbalance as $col)
+								{
+									if(is_numeric($col))
+									{
+										echo "<td><b>".number_format($col)."</b></td>";
+									}
+									else
+									{
+										echo "<td><b>".$col."</b></td>";	
+									}
+									
+								}
+								echo "</tr>";
+							}	
+							echo "<tr></tr>";
+					if(isset($fdata))
+							{
+								echo "<tr class='warning'>";
+								foreach($fdata as $col)
+								{
+									if(is_numeric($col))
+									{
+										echo "<td><b>".number_format($col)."</b></td>";
+									}
+									else
+									{
+										echo "<td><b>".$col."</b></td>";	
+									}
+									
+								}
+								echo "</tr>";
+							}	
 					?>
 					
 				</tbody>

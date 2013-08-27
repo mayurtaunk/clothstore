@@ -88,7 +88,7 @@ class Purchasecredit extends CI_controller {
 							DATE_FORMAT(P.date, '%d-%m-%Y') <= '". $data['to_date'] . "' AND
 							P.company_id=" .$this->session->userdata('company_id') .
 							" GROUP BY P.id";
-					$summ = "SELECT sum(P.amount) AS totalbill , 
+					$summ = "SELECT '' as blank, '' as blank1, '' as blank2, '' as blank3, sum(P.amount) AS totalbill , 
 							sum(P.amount_paid) AS paid, sum((P.amount - P.amount_paid)) AS topay 
 							FROM purchases P 
 							INNER JOIN parties PR ON P.party_id = PR.id 
@@ -110,7 +110,7 @@ class Purchasecredit extends CI_controller {
 							P.recieved = 1 AND
 							P.company_id=" .$this->session->userdata('company_id') .
 							" GROUP BY P.id";
-					$summ = "SELECT sum(P.amount) AS totalbill , 
+					$summ = "SELECT '' as blank, '' as blank1, '' as blank2, '' as blank3, sum(P.amount) AS totalbill , 
 							sum(P.amount_paid) AS paid, sum((P.amount - P.amount_paid)) AS topay 
 							FROM purchases P 
 							INNER JOIN parties PR ON P.party_id = PR.id 

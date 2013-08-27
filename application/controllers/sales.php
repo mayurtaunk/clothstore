@@ -59,7 +59,7 @@ class Sales extends CI_Controller {
 		$data['list'] = array(
 			'heading' => array('ID', 'DateTime', 'Customer Name' ,'Discount', 'Amount')
 		);
-		$data['focusid']="barcode";
+		//$data['focusid']="barcode";
 		$data['rows']="";
 		$data['help']="Please enter Party name OR Bill Date(yyyy-mm-dd)";
 		$data['hhelp'] ="| Ex. Shukla | Ex. 2013-08-11";

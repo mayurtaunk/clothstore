@@ -6,14 +6,7 @@
 	echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
 ?>
 <fieldset>	
-	<div class="control-group <?php echo (strlen(form_error('accountnumber')) > 0 ? 'error' : '') ?>">
-		<div class="control-label">Account Number</div>
-		<div class="controls">
-				<input type="hidden"  name="id" value="<?php echo set_value('id', $id) ?>" />
-				<input type="hidden" id="accountid" name="accountid" value="" />
-				<input type="text" class="span5" id="accountnumber" name="accountnumber" value="<?php echo set_value('accountnumber',$row['account_id']) ?>" placeholder="Enter Customer Name..."/>	
-		</div>
-	</div>
+	
 	<?php
 	if($showtype =='true'){ ?>
 	<div class="control-group <?php echo (strlen(form_error('type')) > 0 ? 'error' : '') ?> ">
