@@ -33,7 +33,8 @@ class Sale_report extends CI_controller {
 				if($this->session->userdata('key') == "1")
 				{
 					$sql = "SELECT DATE_FORMAT(S.datetime,'%d-%m-%Y') AS date, P.name AS product , SUM(SD.quantity) as squantity
-						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
+						FROM sales S 
+						INNER JOIN sale_details SD ON S.id = SD.sale_id 
 						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
 						INNER JOIN products P ON P.id = PD.product_id 
 						INNER JOIN purchases PR ON PR.id = PD.purchase_id 

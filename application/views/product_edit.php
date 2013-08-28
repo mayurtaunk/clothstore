@@ -44,6 +44,7 @@ echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
       });
 
 
-	});
+});
+
 </script>
 <?php echo end_widget(); ?>

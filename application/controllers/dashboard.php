@@ -23,8 +23,8 @@ class Dashboard extends CI_Controller {
 		/*pagination Start*/
 		$this->load->library('pagination');
 		$config['base_url'] = base_url().'index.php/dashboard/index/';
-		$config['total_rows'] = $this->db->count_all('sales');
-		$config['per_page'] = 7;
+		$config['total_rows'] = 10;
+		$config['per_page'] = 10;
 		$config['num_links']=20;
 		$config['full_tag_open'] = '<div class="pagination"><ul>';
 		$config['full_tag_close'] = '</ul></div>';
@@ -57,8 +57,8 @@ class Dashboard extends CI_Controller {
 			$sql="SELECT PR.name,
 					 PD.barcode, 
                      CASE 
-                     WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
-                     ELSE (pd.quantity - sum(sd.quantity)) 
+                     WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
+                     ELSE (SUM(PD.quantity) - sum(sd.quantity)) 
                      END AS stock,
 					 PA.name as partyname,
 					 PA.contact
@@ -76,8 +76,8 @@ class Dashboard extends CI_Controller {
 			$sql="SELECT PR.name,
 			         PD.barcode, 
                      CASE 
-                     WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
-                     ELSE (PD.quantity - sum(SD.quantity)) 
+                     WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
+                     ELSE (SUM(PD.quantity) - sum(SD.quantity)) 
                      END AS stock,
 					 PA.name as partyname,
 					 PA.contact

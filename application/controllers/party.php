@@ -65,6 +65,7 @@ class Party extends CI_Controller {
 					 AND company_id=". $this->session->userdata('company_id') . "
 					 ORDER BY id LIMIT ". $uri ." , ". $config['per_page'];	
 		$query = $this->db->query($sqlquery);
+		$data['slink'] = "party/ajaxSearch";
 		$data['rows']=$query->result_array();
 		$data['page'] = 'list';
 		$data['title'] = "Party List";
@@ -75,6 +76,7 @@ class Party extends CI_Controller {
 		$data['button_text']='Add New Party';
 		$data['cname'] = 'party';
 		$data['dta'] =  $this->session->userdata['search_party'];
+		$data['runauto'] = 1;
 		//$this->firephp->info($data);exit;
 		/*Prepare List View End*/
 		$this->load->view('index',$data);
@@ -157,7 +159,7 @@ class Party extends CI_Controller {
 			/*redirect("party/edit/".$id."");*/
 		}
 	}
-	function search() {
+	function ajaxSearch() {
 		
 			$search = strtolower($this->input->get('term'));
 			$data =array (

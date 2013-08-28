@@ -8,8 +8,7 @@ class Sales extends CI_Controller {
 		$sudata =array (
 						'current_tab' => 'sales'
 					);
-			$this->session->set_userdata($sudata);
-		/*User Validation Start*/
+		$this->session->set_userdata($sudata);
 		$canlog=$this->radhe->canlogin();
 		if ($canlog!=1)
 		{
@@ -20,7 +19,7 @@ class Sales extends CI_Controller {
 		/*pagination Start*/
 		$this->load->library('pagination');
 		$config['base_url'] = base_url().'index.php/sales/index/';
-		$config['total_rows'] = $this->db->count_all('sales');
+		//$config['total_rows'] = $this->db->count_all('sales');
 		$config['per_page'] = 7;
 		$config['num_links']=20;
 		$config['full_tag_open'] = '<div class="pagination"><ul>';
@@ -45,12 +44,14 @@ class Sales extends CI_Controller {
 		$sqlquery = "SELECT 
 				     COUNT(S.id) as recount
 					 FROM sales S 
-					 INNER JOIN sale_details SD ON S.id = SD.sale_id
 					 WHERE S.company_id=" . $this->session->userdata('company_id') . " 
-					 AND SD.sale_id=S.id 
-					 AND (S.party_name LIKE '%" . $skey . "%' OR S.datetime LIKE '%" . $skey . "%')
-					 GROUP BY S.id";
+					 AND (S.party_name LIKE '%" . $skey . "%' OR S.datetime LIKE '%" . $skey . "%')";
 		$reco = $this->radhe->getrowarray($sqlquery);
+		if($reco == null)
+		{
+			$reco['recount'] = 0; 	
+		}
+	
 		$config['total_rows'] = $reco['recount'];
 		$this->pagination->initialize($config);
 		/*pagination Setting End*/
@@ -61,9 +62,10 @@ class Sales extends CI_Controller {
 		);
 		//$data['focusid']="barcode";
 		$data['rows']="";
+
 		$data['help']="Please enter Party name OR Bill Date(yyyy-mm-dd)";
 		$data['hhelp'] ="| Ex. Shukla | Ex. 2013-08-11";
-		$skey=$this->session->userdata('search_sales');
+		$uri=($this->uri->segment(3) == null) ? 0 : $this->uri->segment(3);
 		if($this->session->userdata('key') == "1")
 		{
 			$query = $this->db->query("SELECT 
@@ -76,7 +78,7 @@ class Sales extends CI_Controller {
 										WHERE S.company_id=" . $this->session->userdata('company_id') . " 
 										AND SD.sale_id=S.id 
 										AND (S.party_name LIKE '%" . $skey . "%' OR S.datetime LIKE '%" . $skey . "%')
-										GROUP BY S.id"
+										GROUP BY S.id LIMIT ". $uri . " , " . $config['per_page']
 									 );
 			$data['rows']=$query->result_array();
 		}	
@@ -96,7 +98,7 @@ class Sales extends CI_Controller {
 										AND P.recieved = 1 
 										AND SD.sale_id=S.id
 										AND (S.party_name LIKE '%" . $skey . "%' OR S.datetime LIKE '%" . $skey . "%')
-										GROUP BY S.id"
+										GROUP BY S.id LIMIT ". $uri . " , " . $config['per_page']
 									);
 			
 			$data['rows']=$query->result_array();
@@ -109,6 +111,8 @@ class Sales extends CI_Controller {
 		$data['link_url'] = 'sales/edit/';
 		$data['button_text']='New Bill';
 		$data['cname'] = 'sales';
+		$data['runauto'] = 1;
+		$data['slink'] = 'sales/ajaxSearch';
 		$data['dta'] =  $this->session->userdata['search_sales'];
 		/*Prepare List View End*/
 
@@ -533,13 +537,13 @@ class Sales extends CI_Controller {
 	function ajaxProdcutSearch() 
 	{
 
-		if($this->session->userdata('key') == 0)
+		if($this->session->userdata('key') == 1)
 		{
 			$search = strtolower($this->input->get('term'));	
 			$sql = "SELECT PR.name, PD.barcode
 			FROM purchase_details PD 
 			INNER JOIN purchases P ON P.id = PD.purchase_id 
-			INNER JOIN products PR ON PD.product_id = P.id
+			INNER JOIN products PR ON PD.product_id = PR.id
 			WHERE PR.name LIKE '%$search%' AND PD.sold = 0 AND P.company_id = ".$this->session->userdata['company_id'].
 			" GROUP BY PR.name ORDER BY PR.name";
 			$this->_getautocomplete($sql);
@@ -550,7 +554,7 @@ class Sales extends CI_Controller {
 			$sql = "SELECT PR.name, PD.barcode
 			FROM purchase_details PD 
 			INNER JOIN purchases P ON P.id = PD.purchase_id 
-			INNER JOIN products PR ON PD.product_id = P.id
+			INNER JOIN products PR ON PD.product_id = PR.id
 			WHERE PR.name LIKE '%$search%' AND PD.sold = 0 AND P.recieved = 1 AND P.company_id = ".$this->session->userdata['company_id'].
 			" GROUP BY PR.name ORDER BY PR.name";
 			$this->_getautocomplete($sql);
@@ -558,7 +562,7 @@ class Sales extends CI_Controller {
 			
 		
 	}
-	function search() {
+	function ajaxSearch() {
 		
 			$search = strtolower($this->input->get('term'));
 			$data =array (

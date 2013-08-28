@@ -145,7 +145,7 @@ class Transaction extends CI_Controller {
 		}
 		$this->load->library(array('form_validation'));
 		$this->form_validation->set_error_delimiters('', '');
-		$this->form_validation->set_rules('accountnumber', 'Account Number', 'trim|required');
+		//$this->form_validation->set_rules('accountnumber', 'Account Number', 'trim|required');
 		$this->form_validation->set_rules('particular', 'Particular', 'trim|required');
 		$this->form_validation->set_rules('amount', 'Amount', 'trim|required|regex_match[/^[0-9(),-]+$/]|xss_clean');
 		$this->form_validation->set_rules('remarks', 'Remarks', 'trim|required');

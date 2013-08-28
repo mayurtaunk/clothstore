@@ -35,10 +35,10 @@ class Stockreport extends CI_controller {
 					$sql=	"SELECT PR.id, PR.name,
 					 		PD.barcode, 
                      		CASE 
-                     		WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
-                     		ELSE (pd.quantity - sum(sd.quantity)) 
+                     		WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
+                     		ELSE (SUM(pd.quantity) - sum(sd.quantity)) 
                      		END AS stock,
-                     		PD.quantity,
+                     		SUM(PD.quantity) AS quantity,
 					 		PA.name as partyname,
 					 		PA.contact
 					 		FROM products PR
@@ -46,7 +46,7 @@ class Stockreport extends CI_controller {
 					 		INNER JOIN purchases P ON P.id=PD.purchase_id
 					 		INNER JOIN parties PA ON PA.id=P.party_id
 					 		LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
-					 		WHERE PR.category ='".$data['customer_name']."' P.company_id=".$this->session->userdata('company_id'). 
+					 		WHERE PR.category ='".$data['customer_name']."' AND P.company_id=".$this->session->userdata('company_id'). 
 					 		" GROUP BY PD.barcode ORDER BY stock";
 			
 				}
@@ -55,10 +55,10 @@ class Stockreport extends CI_controller {
 					$sql="SELECT PR.id, PR.name,
 			         	  PD.barcode, 
                      	  CASE 
-                     	  WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
-                     	  ELSE (PD.quantity - sum(SD.quantity)) 
+                     	  WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
+                     	  ELSE (SUM(PD.quantity) - sum(SD.quantity)) 
                      	  END AS stock,
-                     	  PD.quantity,
+                     	  SUM(PD.quantity) as quantity,
 					 	  PA.name as partyname,
 					 	  PA.contact
 					 	  FROM products PR
@@ -79,10 +79,10 @@ class Stockreport extends CI_controller {
 					$sql=	"SELECT PR.id, PR.name,
 					 		PD.barcode, 
                      		CASE 
-                     		WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
-                     		ELSE (pd.quantity - sum(sd.quantity)) 
+                     		WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
+                     		ELSE (SUM(pd.quantity) - sum(sd.quantity)) 
                      		END AS stock,
-                     		PD.quantity,
+                     		SUM(PD.quantity) as quantity,
 					 		PA.name as partyname,
 					 		PA.contact
 					 		FROM products PR
@@ -99,10 +99,10 @@ class Stockreport extends CI_controller {
 					$sql="SELECT PR.id, PR.name,
 			         	  PD.barcode, 
                      	  CASE 
-                     	  WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
-                     	  ELSE (PD.quantity - sum(SD.quantity)) 
+                     	  WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
+                     	  ELSE (SUM(PD.quantity) - sum(SD.quantity)) 
                      	  END AS stock,
-                     	  PD.quantity,
+                     	  SUM(PD.quantity) as quantity,
 					 	  PA.name as partyname,
 					 	  PA.contact
 					 	  FROM products PR

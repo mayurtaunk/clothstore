@@ -62,6 +62,7 @@ class Product extends CI_Controller {
 					 ORDER BY id LIMIT ". $uri ." , ". $config['per_page'];	
 		$query = $this->db->query($sqlquery);
 		$data['rows']=$query->result_array();
+		$data['slink'] = "product/ajaxSearch";
 		$data['page'] = 'list';
 		$data['title'] = "Product List";
 		$data['link'] = "product/edit/";
@@ -70,6 +71,7 @@ class Product extends CI_Controller {
 		$data['link_url'] = 'product/edit/';
 		$data['button_text']='Add new Product';
 		$data['cname'] = 'product';
+		$data['runauto'] = 1;
 		$data['dta'] =  $this->session->userdata['search_product'];
 		/*Prepare List View End*/
 
@@ -154,7 +156,7 @@ class Product extends CI_Controller {
 			redirect("product");
 		}
 	}
-	function search() 
+	function ajaxSearch() 
 	{
 		
 			$search = strtolower($this->input->get('term'));
