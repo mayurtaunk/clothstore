@@ -29,42 +29,6 @@ class Top_selling_item extends CI_controller
 			$data['to_date']	  = $this->input->post('to_date');
 			$sql="";
 			
-			if($data['customer_name'] != "")
-			{
-				if($this->session->userdata('key') == "1")
-				{
-					$sql = "SELECT  P.name AS product , SUM(SD.quantity) as squantity
-						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
-						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
-						INNER JOIN products P ON P.id = PD.product_id 
-						INNER JOIN purchases PR ON PR.id = PD.purchase_id 
-						WHERE P.name = '".$data['customer_name']."' AND
-						DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
-						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
-						P.company_id=". $this->session->userdata('company_id') .
-						" GROUP BY  SD.purchase_detail_id ORDER BY squantity DESC";
-			
-				}
-				else
-				{
-					$sql = "SELECT  P.name AS product , SUM(SD.quantity) as squantity 
-						FROM sales S INNER JOIN sale_details SD ON S.id = SD.sale_id 
-						INNER JOIN purchase_details PD ON PD.id = SD.purchase_detail_id
-						INNER JOIN purchases PU ON PD.purchase_id = PU.id 
-						INNER JOIN purchases PR ON PR.id = PD.purchase_id
-						INNER JOIN products P ON P.id = PD.product_id 
-						WHERE P.name = '".$data['customer_name']."' AND
-						DATE_FORMAT(S.datetime, '%d-%m-%Y') >= '".$data['from_date']."' AND
-						DATE_FORMAT(S.datetime, '%d-%m-%Y') <= '".$data['to_date']."' AND
-						PU.recieved = 1 AND
-						P.company_id=". $this->session->userdata('company_id') .
-						" GROUP BY  SD.purchase_detail_id ORDER BY squantity DESC";
-					
-				}
-				
-			}
-			else
-			{
 				if($this->session->userdata('key') == "1")
 				{
 
@@ -91,7 +55,6 @@ class Top_selling_item extends CI_controller
 						P.company_id=". $this->session->userdata('company_id'). " GROUP BY P.name ORDER BY squantity DESC";
 				}
 
-			}
 			$data['heading'] = array('Product Name','Sold');
 			$data['fields']= array('product','squantity');
 			//$data['link_col'] = 'id';

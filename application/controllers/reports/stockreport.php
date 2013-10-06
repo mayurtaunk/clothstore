@@ -32,17 +32,19 @@ class Stockreport extends CI_controller {
 			{
 				if($this->session->userdata('key') == "1")
 				{
+					
 					$sql=	"SELECT PR.id, PR.name,
 					 		PD.barcode, 
                      		CASE 
-                     		WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
-                     		ELSE (SUM(PD.quantity) - sum(SD.quantity)) 
+                     		WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
+                     		ELSE (PD.quantity - sum(SD.quantity)) 
                      		END AS stock,
-                     		SUM(PD.quantity) AS quantity,
+                     		PD.quantity AS quantity,
 					 		PA.name as partyname,
 					 		PA.contact
 					 		FROM products PR
-					 		INNER JOIN purchase_details PD ON PR.id = PD.product_id
+					 		INNER JOIN (SELECT id,sum(quantity) as quantity ,barcode,product_id,purchase_id 
+								 FROM purchase_details GROUP BY barcode)PD ON PR.id = PD.product_id
 					 		INNER JOIN purchases P ON P.id=PD.purchase_id
 					 		INNER JOIN parties PA ON PA.id=P.party_id
 					 		LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
@@ -54,21 +56,22 @@ class Stockreport extends CI_controller {
 				else
 				{
 					$sql="SELECT PR.id, PR.name,
-			         	  PD.barcode, 
-                     	  CASE 
-                     	  WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
-                     	  ELSE (SUM(PD.quantity) - sum(SD.quantity)) 
-                     	  END AS stock,
-                     	  SUM(PD.quantity) as quantity,
-					 	  PA.name as partyname,
-					 	  PA.contact
-					 	  FROM products PR
-					 	  INNER JOIN purchase_details PD ON PR.id = PD.product_id
-					 	  INNER JOIN purchases P ON P.id=PD.purchase_id
-					 	  INNER JOIN parties PA ON PA.id=P.party_id
-					 	  LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
+					 		PD.barcode, 
+                     		CASE 
+                     		WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
+                     		ELSE (PD.quantity - sum(SD.quantity)) 
+                     		END AS stock,
+                     		PD.quantity AS quantity,
+					 		PA.name as partyname,
+					 		PA.contact
+					 		FROM products PR
+					 		INNER JOIN (SELECT id,sum(quantity) as quantity ,barcode,product_id,purchase_id 
+								 FROM purchase_details GROUP BY barcode)PD ON PR.id = PD.product_id
+					 		INNER JOIN purchases P ON P.id=PD.purchase_id
+					 		INNER JOIN parties PA ON PA.id=P.party_id
+					 		LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
 					 	  WHERE PR.category ='".$data['customer_name']."' AND P.recieved = 1 AND P.company_id=".$this->session->userdata('company_id'). 
-					 	  " GROUP BY PD.barcode ORDER BY stock ";	
+					 	  " GROUP BY PD.id, PD.barcode ORDER BY stock ";	
 					
 				 }
 				
@@ -80,39 +83,41 @@ class Stockreport extends CI_controller {
 					$sql=	"SELECT PR.id, PR.name,
 					 		PD.barcode, 
                      		CASE 
-                     		WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
-                     		ELSE (SUM(pd.quantity) - sum(sd.quantity)) 
+                     		WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
+                     		ELSE (PD.quantity - sum(SD.quantity)) 
                      		END AS stock,
-                     		SUM(PD.quantity) as quantity,
+                     		PD.quantity AS quantity,
 					 		PA.name as partyname,
 					 		PA.contact
 					 		FROM products PR
-					 		INNER JOIN purchase_details PD ON PR.id = PD.product_id
+					 		INNER JOIN (SELECT id,sum(quantity) as quantity ,barcode,product_id,purchase_id 
+								 FROM purchase_details GROUP BY barcode)PD ON PR.id = PD.product_id
 					 		INNER JOIN purchases P ON P.id=PD.purchase_id
 					 		INNER JOIN parties PA ON PA.id=P.party_id
 					 		LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
 					 		WHERE P.company_id=".$this->session->userdata('company_id'). 
-					 		" GROUP BY PD.barcode ORDER BY stock";
+					 		" GROUP BY PD.id, PD.barcode ORDER BY stock";
 			
 				}
 				else
 				{
 					$sql="SELECT PR.id, PR.name,
-			         	  PD.barcode, 
-                     	  CASE 
-                     	  WHEN (SUM(SD.quantity)) IS NULL THEN SUM(PD.quantity) 
-                     	  ELSE (SUM(PD.quantity) - sum(SD.quantity)) 
-                     	  END AS stock,
-                     	  SUM(PD.quantity) as quantity,
-					 	  PA.name as partyname,
-					 	  PA.contact
-					 	  FROM products PR
-					 	  INNER JOIN purchase_details PD ON PR.id = PD.product_id
-					 	  INNER JOIN purchases P ON P.id=PD.purchase_id
-					 	  INNER JOIN parties PA ON PA.id=P.party_id
-					 	  LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
+					 		PD.barcode, 
+                     		CASE 
+                     		WHEN (SUM(SD.quantity)) IS NULL THEN PD.quantity 
+                     		ELSE (PD.quantity - sum(SD.quantity)) 
+                     		END AS stock,
+                     		PD.quantity AS quantity,
+					 		PA.name as partyname,
+					 		PA.contact
+					 		FROM products PR
+					 		INNER JOIN (SELECT id,sum(quantity) as quantity ,barcode,product_id,purchase_id 
+								 FROM purchase_details GROUP BY barcode)PD ON PR.id = PD.product_id
+					 		INNER JOIN purchases P ON P.id=PD.purchase_id
+					 		INNER JOIN parties PA ON PA.id=P.party_id
+					 		LEFT OUTER JOIN sale_details SD ON PD.id = SD.purchase_detail_id
 					 	  WHERE P.recieved = 1 AND P.company_id=".$this->session->userdata('company_id'). 
-					 	  " GROUP BY PD.barcode ORDER BY stock ";
+					 	  " GROUP BY Pd.id, PD.barcode ORDER BY stock ";
 					
 				 }
 

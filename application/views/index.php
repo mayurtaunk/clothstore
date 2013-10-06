@@ -279,7 +279,10 @@ $this->output->set_header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
             <?php }?>
             <?php
             if(isset($page))
+            {
               $this->load->view($page);
+            }
+              
             ?> 
           </div>
 

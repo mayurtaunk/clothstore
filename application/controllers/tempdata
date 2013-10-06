@@ -1,0 +1,26 @@
+$sql= "SELECT BA.id, DATE_FORMAT(BA.date, '%d-%m-%Y') AS date,
+					      P.name AS party_name, PS.name AS party_site,
+     					 SP.name AS supplier_party, SPS.name AS supplier_site, TL.name AS to_godown, V.name AS vessel,
+      					C.name AS cargo_name, BAD.disp_bags, BAR.bags, ROUND(BAD.disp_bags - BAR.bags) AS diff_bags, ROUND(SUM(distinct(BAD.weight)),3) AS dispatch_weight, ROUND(BAR.nett_weight, 3) AS received_weight , ROUND(SUM(distinct(BAD.weight)) - SUM(distinct(BAR.nett_weight)), 3) AS diff_weight, BD.total_trip
+						FROM bulk_arrivals BA
+   						INNER JOIN cargos C ON BA.cargo_id = C.id
+   						INNER JOIN parties P ON BA.party_id = P.id
+   						LEFT OUTER JOIN parties SP ON BA.supplier_id = SP.id
+   						LEFT OUTER JOIN party_sites PS ON BA.party_site_id = PS.id
+   						LEFT OUTER JOIN party_sites SPS ON BA.supplier_site_id = SPS.id
+   						LEFT OUTER JOIN godowns TL ON BA.to_godown_id = TL.id
+   						LEFT OUTER JOIN vessels V ON BA.vessel_id = V.id
+   						LEFT OUTER JOIN (SELECT bulk_arrival_id, SUM(weight) AS weight, SUM(bags) AS disp_bags FROM bulk_arrival_dispatchs GROUP BY bulk_arrival_id) BAD ON BA.id = BAD.bulk_arrival_id
+   						LEFT OUTER JOIN (SELECT bulk_arrival_id, SUM(nett_jute + nett_pp + nett_loose) AS nett_weight, SUM(jute + pp) AS bags FROM bulk_arrival_receivings GROUP BY bulk_arrival_id) BAR ON BA.id = BAR.bulk_arrival_id
+   						LEFT OUTER JOIN (SELECT COUNT(distinct id) AS total_trip, bulk_arrival_id FROM bulk_arrival_receivings GROUP BY bulk_arrival_id) BD ON BA.id = BD.bulk_arrival_id
+						WHERE P.company_id = 1  AND (
+						     DATE_FORMAT(BA.date, '%d-%m-%Y') LIKE '%$search%' OR
+						     P.name LIKE '%$search%' OR
+						     C.name LIKE '%$search%' OR
+						     SP.name LIKE '%$search%' OR
+						     SPS.name LIKE '%$search%' OR
+						     TL.name LIKE '%$search%')
+							GROUP BY BA.id
+							ORDER BY BA.date DESC
+							LIMIT $offset, $limit";
+
